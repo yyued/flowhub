@@ -10,12 +10,12 @@
 /*
  * emit event
  */
-import emit from './event/emit.js';
+import emit from './event/emit';
 
 /*
  * listen event
  */
-import listen from './event/listen.js';
+import listen from './event/listen';
 
 module.exports = {
 
