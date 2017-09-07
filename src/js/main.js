@@ -5,7 +5,7 @@ const handler = ( data ) => {
 }
 
 // 监听 test 事件流
-$hub.listen('test', handler);
+const listener = $hub.listen('test', handler);
 
 // 设置 store 值
 $hub.store.code = 1;
@@ -26,6 +26,7 @@ const timer = setInterval(() => {
         clearInterval( timer );
 
         // 移除监听 test 事件流
-        $hub.removeListen('test', handler);
+        // $hub.removeListen('test', handler);
+        listener.remove();
     }
 }, 1000);

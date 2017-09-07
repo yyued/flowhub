@@ -20,4 +20,13 @@ export default function ( key, handler ) {
             handler( data[ _key ] );
         }
     }
+
+    // the listener
+    const listener = { };
+
+    listener.remove = ( ) => {
+        this.removeListen( key, handler );
+    }
+
+    return listener;
 };
