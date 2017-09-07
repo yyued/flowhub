@@ -17,6 +17,7 @@ $hub.listen('@store/code', ( code ) => {
 })
 
 const timer = setInterval(() => {
+    // $hub.emit('@store/code', 1);
     ++$hub.store.code;
 
     // 触发 test 事件流
