@@ -1,5 +1,8 @@
 /*
  * listen event
+ * @param {String} key
+ * @param {Function} handler
+ * @return {object} listener
  */
 
 'use strict';

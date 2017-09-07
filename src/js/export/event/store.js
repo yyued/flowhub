@@ -1,5 +1,8 @@
 /*
  * store proxy
+ * @param {object} _store
+ * @param {object} _observer
+ * @return {Proxy} store
  */
 
 'use strict';

@@ -1,5 +1,8 @@
 /*
  * emit event
+ * @param {String} key
+ * @param {Any} value
+ * @return {void}
  */
 
 'use strict';

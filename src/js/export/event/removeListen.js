@@ -1,5 +1,8 @@
 /*
  * removeListen event
+ * @param {String} key
+ * @param {Function} handler
+ * @return {void}
  */
 
 'use strict';

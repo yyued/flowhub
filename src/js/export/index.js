@@ -41,11 +41,17 @@ module.exports = {
 
     /*
      * emit to the observer
+     * @param {String} key
+     * @param {Any} value
+     * @return {void}
      */
     emit,
 
     /*
      * register to be an observer
+     * @param {String} key
+     * @param {Function} handler
+     * @return {object} listener
      */
     listen,
 
@@ -56,11 +62,17 @@ module.exports = {
 
     /*
      * save the store value in object
+     * @param {String} key
+     * @param {Function} handler
+     * @return {void}
      */
     data: _store,
 
     /*
      * make the store proxyer
+     * @param {object} _store
+     * @param {object} _observer
+     * @return {Proxy} store
      */
     store: store( _store, _observer ),
 }
