@@ -1,9 +1,31 @@
 import $hub from './export';
 
-$hub.listen('test', ( data ) => {
-    console.log( 'test', data );
+const handler = ( data ) => {
+    console.log( 'handler', data );
+}
+
+// 监听 test 事件流
+$hub.listen('test', handler);
+
+// 设置 store 值
+$hub.store.code = 1;
+
+// 监听 store 里具体 某个数值
+// 若 这个数值已存在 “当前值”，则监听成功后，立即返回 “当前值”，就像 Rx.BehaviorSubject
+$hub.listen('@store/code', ( code ) => {
+    console.log( 'store code', code );
 })
 
-setInterval(() => {
+const timer = setInterval(() => {
+    ++$hub.store.code;
+
+    // 触发 test 事件流
     $hub.emit('test', { code: 1 });
+
+    if ( $hub.store.code === 5 ) {
+        clearInterval( timer );
+
+        // 移除监听 test 事件流
+        $hub.removeListen('test', handler);
+    }
 }, 1000);

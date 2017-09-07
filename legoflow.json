@@ -1,5 +1,5 @@
 {
-    "version": "1.0.39",
+    "version": "1.0.40",
     "type": "clean",
     "assets": "",
     "es6": true,
@@ -17,7 +17,7 @@
     "other": "",
     "dist": "",
     "output": "",
-    "shell": "",
+    "shell": "./shell.js",
     "alias": {},
     "global": {},
     "externals": {},

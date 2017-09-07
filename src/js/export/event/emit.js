@@ -4,7 +4,7 @@
 
 'use strict';
 
-export default function ( key: string, data: any ): void {
+export default function ( key, data ) {
     const { observer } = this;
 
     if ( typeof observer[ key ] !== 'undefined' ) {
