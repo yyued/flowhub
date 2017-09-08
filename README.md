@@ -1,6 +1,6 @@
 # hub.js
 
-Through a simple way to deal with the event flow.
+Through a simple way to deal with the event flow from customized dispatcher / DOM element / Fetch request / WebSocket.
 
 ## Simple Usage
 
