@@ -5,7 +5,7 @@ Through a simple way to deal with the event flow.
 ## Simple Usage
 
 ```js
-import $hub from './hub.min.js';
+import $hub from './dist/hub.min.js';
 
 // register an event listener
 $hub.listen('test', ( data ) => {

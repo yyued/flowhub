@@ -1,4 +1,4 @@
-import $hub from './export';
+import $hub from './hub';
 
 const handler = ( data ) => {
     console.log( 'handler', data );
