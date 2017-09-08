@@ -10,6 +10,7 @@
 export default function ( dom, event ) {
     if ( dom ) {
         const DOM = document.body.querySelector( dom );
+
         if ( DOM ) {
             const { emit } = this;
 

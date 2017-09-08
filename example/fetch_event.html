@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> fetch event - example </title>
+    <title> fetch event </title>
 </head>
 <body>
 
@@ -12,11 +12,11 @@
 
     <script>
         // 绑定 fetch 事件流
-        const fetchDispatcher = $hub.fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event');
+        const dispatcher = $hub.fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event');
 
         setTimeout(() => {
             // 刷新 fetch 事件流
-            fetchDispatcher.reload();
+            dispatcher.reload();
         }, 2000);
 
         // 监听对应的 fetch 事件流
