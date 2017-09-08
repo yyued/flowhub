@@ -20,10 +20,10 @@ setInterval(() => {
 
 ## Example
 
-[→ basic use](https://github.com/yyued/hub.js/blob/master/example/basic_use.html)
-[→ store value](https://github.com/yyued/hub.js/blob/master/example/store_value.html)
-[→ native event from DOM](https://github.com/yyued/hub.js/blob/master/example/native_event_from_dom.html)
-[→ fetch event](https://github.com/yyued/hub.js/blob/master/example/fetch_event.html)
+* [→ basic use](https://github.com/yyued/hub.js/blob/master/example/basic_use.html)
+* [→ store value](https://github.com/yyued/hub.js/blob/master/example/store_value.html)
+* [→ native event from DOM](https://github.com/yyued/hub.js/blob/master/example/native_event_from_dom.html)
+* [→ fetch event](https://github.com/yyued/hub.js/blob/master/example/fetch_event.html)
 
 ## License
 
