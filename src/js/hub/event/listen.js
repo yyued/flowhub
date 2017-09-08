@@ -27,6 +27,8 @@ export default function ( key, handler ) {
     // the listener
     const listener = { };
 
+    listener.key = key;
+
     listener.remove = ( ) => {
         this.removeListen( key, handler );
     }

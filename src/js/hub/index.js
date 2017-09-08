@@ -25,8 +25,12 @@ import removeListen from './event/removeListen';
 /*
  * store proxy
  */
-import store from './event/store.js';
+import store from './event/store';
 
+/*
+ * DOM event
+ */
+import DOM from './event/DOM';
 
 let _observer = { };
 
@@ -75,4 +79,12 @@ module.exports = {
      * @return {Proxy} store
      */
     store: store( _store, _observer ),
+
+    /*
+     * listen DOM native event to emit event flow
+     * @param {String} dom
+     * @param {String} event
+     * @return {dispatcher | void}
+     */
+    DOM,
 }

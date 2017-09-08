@@ -31,3 +31,13 @@ const timer = setInterval(() => {
         listener.remove();
     }
 }, 1000);
+
+// 绑定 DOM 事件流
+const dispatcher = $hub.DOM('button', 'click').emit('dom-click-event');
+
+// 监听 DOM 事件流
+$hub.listen('dom-click-event', ( e ) => {
+    console.log( 'button click', e );
+    // 移除 DOM 监听事件，停止 发送事件流
+    dispatcher.remove();
+})
