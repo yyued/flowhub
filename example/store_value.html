@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> store value - example </title>
+</head>
+<body>
+
+    <script src="../dist/hub.min.js"></script>
+
+    <script>
+        // 设置 store 值
+        $hub.store.code = 1;
+
+        // 监听 store 里具体 某个数值
+        // 若 这个数值已存在 “当前值”，则监听成功后，立即返回 “当前值”，就像 Rx.BehaviorSubject
+        $hub.listen('@store/code', ( code ) => {
+            console.log( 'store code', code );
+        })
+
+        setInterval(() => {
+            // $hub.emit('@store/code', 1);
+            ++$hub.store.code;
+        }, 1000);
+
+    </script>
+
+</body>
+</html>

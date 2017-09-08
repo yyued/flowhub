@@ -32,6 +32,11 @@ import store from './event/store';
  */
 import DOM from './event/DOM';
 
+/*
+ * fetch event
+ */
+import fetch from './event/fetch';
+
 let _observer = { };
 
 let _store = { };
@@ -73,7 +78,7 @@ module.exports = {
     data: _store,
 
     /*
-     * make the store proxyer
+     * build the store proxyer
      * @param {object} _store
      * @param {object} _observer
      * @return {Proxy} store
@@ -81,10 +86,18 @@ module.exports = {
     store: store( _store, _observer ),
 
     /*
-     * listen DOM native event to emit event flow
+     * listen native event from DOM element, and emit event flow
      * @param {String} dom
      * @param {String} event
      * @return {dispatcher | void}
      */
     DOM,
+
+    /*
+     * fetch event
+     * @param {String} url
+     * @param {void | object} args
+     * @return {dispatcher | void}
+     */
+    fetch,
 }
