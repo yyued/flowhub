@@ -37,6 +37,11 @@ import DOM from './event/DOM';
  */
 import fetch from './event/fetch';
 
+/*
+ * websocket event
+ */
+import ws from './event/ws';
+
 let _observer = { };
 
 let _store = { };
@@ -100,4 +105,7 @@ module.exports = {
      * @return {dispatcher | void}
      */
     fetch,
+
+    // TODO: websocket event can emit flow to the listener.
+    ws,
 }
