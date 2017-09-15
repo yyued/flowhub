@@ -1,13 +1,12 @@
 /*
- * DOM event
+ * DOM event source
  * @param {String} dom
- * @param {String} event
  * @return {dispatcher | void}
  */
 
 'use strict';
 
-export default function ( dom, event ) {
+export default function ( dom ) {
     if ( dom ) {
         let DOM = void 0;
 
@@ -23,11 +22,11 @@ export default function ( dom, event ) {
 
             const dispatcher = { };
 
-            let handler = void 0;
+            let handler = [];
 
             // dispatcher can emit the native event flow
-            dispatcher.emit = ( key, data ) => {
-                handler = ( e ) => {
+            dispatcher.with = ( type, key, data ) => {
+                const _handler = ( e ) => {
                     if ( data ) {
                         emit.bind( this )( key, { event: e, data, } );
                     }
@@ -35,13 +34,22 @@ export default function ( dom, event ) {
                         emit.bind( this )( key, e );
                     }
                 }
-                DOM.addEventListener(event, handler);
+
+                handler.push({
+                    type,
+                    handler: _handler,
+                });
+
+                DOM.addEventListener(type, _handler);
+
                 return dispatcher;
             }
 
             // remove the native event, and stop event flow
             dispatcher.remove = ( ) => {
-                DOM.removeEventListener(event, handler);
+                handler.forEach(( { type: _t, handler: _h } ) => {
+                    DOM.removeEventListener( _t, _h );
+                })
             }
 
             return dispatcher;

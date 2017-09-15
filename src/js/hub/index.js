@@ -28,21 +28,32 @@ import removeListen from './event/removeListen';
 import store from './event/store';
 
 /*
- * DOM event
+ * DOM event srouce
  */
 import DOM from './event/DOM';
 
 /*
- * fetch event
+ * fetch event srouce
  */
 import fetch from './event/fetch';
 
 /*
+ * socket.io event srouce
+ */
+import IO from './event/io';
+
+/*
  * websocket event
  */
-import ws from './event/ws';
+import WS from './event/ws';
 
 let _observer = { };
+
+// 用于存储一些持久化链接
+let _socket = {
+    ws: [ ],
+    io: [ ],
+};
 
 let _store = { };
 
@@ -76,11 +87,13 @@ module.exports = {
 
     /*
      * save the store value in object
-     * @param {String} key
-     * @param {Function} handler
-     * @return {void}
      */
     data: _store,
+
+    /*
+     * save the socket ( WS / IO )
+     */
+    socket: _socket,
 
     /*
      * build the store proxyer
@@ -93,19 +106,31 @@ module.exports = {
     /*
      * listen native event from DOM element, and emit event flow
      * @param {String} dom
-     * @param {String} event
      * @return {dispatcher | void}
      */
     DOM,
 
     /*
-     * fetch event
+     * fetch event source
      * @param {String} url
      * @param {void | object} args
      * @return {dispatcher | void}
      */
     fetch,
 
-    // TODO: websocket event can emit flow to the listener.
-    ws,
+    /*
+     * WebSocket event can emit flow to the listener.
+     * @param {SFKey} the key of socket
+     * @param {String} url
+     * @return {dispatcher | void}
+     */
+    WS,
+
+    /*
+     * socket.io event can emit flow to the listener.
+     * @param {SFKey} the key of socket
+     * @param {String} url
+     * @return {dispatcher | void}
+     */
+    IO,
 }

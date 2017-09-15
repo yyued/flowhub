@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>socket.io event</title>
+
+    <script src="./lib/socket.io.min.js"></script>
+</head>
+<body>
+
+    <script>
+        // 多个关联
+        const dispatcher = $hub.IO('http://legox.org:5353').with('mock', 'io-event1').with('mock', 'io-event2');
+
+        // 获取 socket 流
+        dispatcher.socket.emit('mock', {
+            key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',
+            time: 1000,
+        })
+
+        // 注册监听
+        $hub.listen('io-event1', ( result ) => {
+            console.log( 'io1: ', result );
+        })
+        $hub.listen('io-event2', ( result ) => {
+            console.log( 'io2: ', result );
+        })
+    </script>
+
+
+</body>
+</html>

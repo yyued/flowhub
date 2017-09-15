@@ -13,8 +13,8 @@
     <script src="../dist/hub.min.js"></script>
 
     <script>
-        // 绑定 DOM 事件流
-        const dispatcher = $hub.DOM('button', 'click').emit('dom-click-event');
+        // 绑定 DOM 事件流 ( 可绑定多个 )
+        const dispatcher = $hub.DOM('button').with('click', 'dom-click-event').with('mousedown', 'dom-mousedown-event');
 
         // 监听 DOM 事件流
         $hub.listen('dom-click-event', ( e ) => {
@@ -22,6 +22,14 @@
             // 移除 DOM 监听事件，停止 发送事件流
             dispatcher.remove();
         })
+        $hub.listen('dom-mousedown-event', ( e ) => {
+            console.log( 'button mousedown', e );
+        })
+
+        setTimeout(function() {
+            // 移除 DOM 监听事件，停止 发送事件流
+            dispatcher.remove();
+        }, 10000);
     </script>
 
 </body>

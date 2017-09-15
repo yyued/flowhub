@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>websocket event</title>
+</head>
+<body>
+
+
+    <script src="../dist/hub.min.js"></script>
+    <script>
+        // 多个 emit
+        const d3 = $hub.WS('ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc').emit('ws-event1').emit('ws-event2');
+
+        // 注册监听
+        $hub.listen('ws-event1', ( result ) => {
+            console.log( 'ws1: ', result );
+        })
+        $hub.listen('ws-event2', ( result ) => {
+            console.log( 'ws2: ', result );
+        })
+    </script>
+
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 /*
- * WebSocket event srouce
+ * socket.io event srouce
  * @param {SFKey} the key of socket
  * @param {String} url
  * @return {dispatcher | void}
@@ -15,9 +15,9 @@ export default function ( SFKey, url ) {
     }
 
     if ( url ) {
-        const _socket = new WebSocket( url );
+        const _socket = io( url );
 
-        socket.ws.push({
+        socket.io.push({
             key: SFKey,
             url,
             socket,
@@ -27,7 +27,7 @@ export default function ( SFKey, url ) {
 
         dispatcher.socket = _socket;
 
-        dispatcher.emit = ( key, data ) => {
+        dispatcher.with = ( SKey, key, data ) => {
             const handler = ( result ) => {
                 if ( data ) {
                     emit.bind( this )( key, { result, data, } );
@@ -37,18 +37,13 @@ export default function ( SFKey, url ) {
                 }
             }
 
-            _socket.addEventListener('message', ( res ) => {
-                if ( res.data ) {
-                    try {
-                        handler( JSON.parse( res.data ) );
-                    } catch ( e ) {
-                        handler( res.data );
-                    }
-                }
-                else {
+            _socket.on(SKey, function ( res ) {
+                try {
+                    handler( JSON.parse( res ) );
+                } catch ( e ) {
                     handler( res );
                 }
-            })
+            });
 
             return dispatcher;
         }

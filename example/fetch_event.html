@@ -11,8 +11,8 @@
     <script src="../dist/hub.min.js"></script>
 
     <script>
-        // 绑定 fetch 事件流
-        const dispatcher = $hub.fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event');
+        // 绑定 fetch 事件流（ 可绑定多个 ）
+        const dispatcher = $hub.fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event1').emit('fetch-event2');
 
         setTimeout(() => {
             // 刷新 fetch 事件流
@@ -20,8 +20,11 @@
         }, 2000);
 
         // 监听对应的 fetch 事件流
-        $hub.listen('fetch-event', ( result ) => {
-            console.log( 'fetch', result );
+        $hub.listen('fetch-event1', ( result ) => {
+            console.log( 'fetch1', result );
+        })
+        $hub.listen('fetch-event2', ( result ) => {
+            console.log( 'fetch2', result );
         })
     </script>
 

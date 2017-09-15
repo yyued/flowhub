@@ -1,5 +1,5 @@
 /*
- * fetch event
+ * fetch event srouce
  * @param {String} url
  * @param {void | object} args
  * @return {dispatcher | void}
@@ -12,38 +12,55 @@ export default function ( url, args = { } ) {
 
         const { emit } = this;
 
-        const dispatcher = { };
+        let handler = [];
 
-        let handler = void 0;
+        let timer = void 0;
+
+        let runHandler = ( data ) => {
+            handler.forEach(( _h ) => {
+                _h( data );
+            })
+        }
+
+        const dispatcher = [];
 
         let reloadHandler = void 0;
 
         // send the HTTP request by fetch, and fetch data flow
         dispatcher.emit = ( key, data ) => {
-            handler = ( result ) => {
+            handler.push(( result ) => {
                 if ( data ) {
                     emit.bind( this )( key, { result, data, } );
                 }
                 else {
                     emit.bind( this )( key, result );
                 }
+            })
+
+            // 多次 emit 去抖
+            if ( timer ) {
+                clearTimeout( timer );
             }
-
-            reloadHandler = () => {
-                fetch( url, args )
-                    .then(( res ) => {
-                        handler( res );
-                    })
-                    .catch(( err ) => {
-                        handler( err );
-                    });
-            }
-
-            dispatcher.reload = reloadHandler;
-
-            reloadHandler();
+            timer = setTimeout(() => {
+                dispatcher.reload();
+            }, 0);
 
             return dispatcher;
+        }
+
+        dispatcher.reload = () => {
+            fetch( url, args )
+                .then(( res ) => {
+                    if ( res.status === 200 && res.json ) {
+                        res.json().then( data => runHandler( data ) );
+                    }
+                    else {
+                        runHandler( res );
+                    }
+                })
+                .catch(( err ) => {
+                    runHandler( err );
+                });
         }
 
         return dispatcher;
