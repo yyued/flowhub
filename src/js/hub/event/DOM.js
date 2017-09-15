@@ -9,7 +9,14 @@
 
 export default function ( dom, event ) {
     if ( dom ) {
-        const DOM = document.body.querySelector( dom );
+        let DOM = void 0;
+
+        if ( typeof dom === 'string' ) {
+            DOM = document.body.querySelector( dom );
+        }
+        else {
+            DOM = dom;
+        }
 
         if ( DOM ) {
             const { emit } = this;

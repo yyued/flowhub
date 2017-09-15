@@ -33,22 +33,22 @@ const timer = setInterval(() => {
 }, 1000);
 
 // 绑定 DOM 事件流
-const dispatcher = $hub.DOM('button', 'click').emit('dom-click-event');
+const d1 = $hub.DOM('button', 'click').emit('dom-click-event');
 
 // 监听对应的 DOM 事件流
 $hub.listen('dom-click-event', ( e ) => {
     console.log( 'button click', e );
     // 移除 DOM 监听事件，停止 发送事件流
-    dispatcher.remove();
+    d1.remove();
 })
 
 
 // 绑定 fetch 事件流
-const fetchDispatcher = $hub.fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event');
+const d2 = $hub.fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event');
 
 setTimeout(() => {
     // 刷新 fetch 事件流
-    fetchDispatcher.reload();
+    d2.reload();
 }, 2000);
 
 // 监听对应的 fetch 事件流
