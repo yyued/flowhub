@@ -12,7 +12,7 @@
     <script src="../dist/hub.min.js"></script>
     <script>
         // 多个 emit
-        const d3 = $hub.WS('ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc').emit('ws-event1').emit('ws-event2');
+        const dispatcher = $hub.WS('ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc').emit('ws-event1').emit('ws-event2');
 
         // 注册监听
         $hub.listen('ws-event1', ( result ) => {

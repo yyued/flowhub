@@ -19,8 +19,6 @@
         // 监听 DOM 事件流
         $hub.listen('dom-click-event', ( e ) => {
             console.log( 'button click', e );
-            // 移除 DOM 监听事件，停止 发送事件流
-            dispatcher.remove();
         })
         $hub.listen('dom-mousedown-event', ( e ) => {
             console.log( 'button mousedown', e );
