@@ -35,35 +35,43 @@ import $hub from './hub';
 
 // ================ 绑定 DOM 事件流 ================
 
-// 格式处理器
-$hub.converter.DOMEventFormat = function ( e ) {
-    return e.target;
-}
+// // 格式处理器
+// $hub.converter.DOMEventFormat1 = function ( e ) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(function() {
+//             resolve( [ e.type, e.target ] );
+//         }, 2000);
+//     })
+// }
+// $hub.converter.DOMEventFormat2 = function ( e ) {
+//     return [ e.target, e.type ];
+// }
 
-const d1 = $hub.DOM('button').convert('DOMEventFormat').with('click', 'dom-click-event').with('mousedown', 'dom-mousedown-event');
+// const d1 = $hub.DOM('button').from('click').convert('DOMEventFormat1').emit('dom-click-event').from('mousedown').convert('DOMEventFormat2').emit('dom-mousedown-event');
 
-// 监听对应的 DOM 事件流
-$hub.listen('dom-click-event', ( e ) => {
-    console.log( 'button click', e );
-})
+// // 监听对应的 DOM 事件流
+// $hub.listen('dom-click-event', ( e ) => {
+//     console.log( 'button click', e );
+// })
 
-$hub.listen('dom-mousedown-event', ( e ) => {
-    console.log( 'button mousedown', e );
-})
+// $hub.listen('dom-mousedown-event', ( e ) => {
+//     console.log( 'button mousedown', e );
+// })
 
-setTimeout(function() {
-    // 移除 DOM 监听事件，停止 发送事件流
-    d1.remove();
-}, 10000);
+// setTimeout(function() {
+//     console.log( '---------- remove ----------' );
+//     // 移除 DOM 监听事件，停止 发送事件流
+//     d1.remove();
+// }, 10000);
 
 // ================ 绑定 Fetch 事件流 ================
 
-// 格式处理器
+// // 格式处理器
 // $hub.converter.FetchEventFormat = function ( data ) {
 //     return data.code;
 // }
 
-// const d2 = $hub.Fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').convert('FetchEventFormat').emit('fetch-event1').emit('fetch-event2');
+// const d2 = $hub.Fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event1').convert('FetchEventFormat').emit('fetch-event2');
 
 // setTimeout(() => {
 //     // 刷新 fetch 事件流
@@ -85,7 +93,7 @@ setTimeout(function() {
 //     return data.code;
 // }
 
-// const d3 = $hub.WS('ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc').convert('WSEventFormat').emit('ws-event1').emit('ws-event2');
+// const d3 = $hub.WS('ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc/1000').emit('ws-event1').convert('WSEventFormat').emit('ws-event2');
 
 // $hub.listen('ws-event1', ( result ) => {
 //     console.log( 'ws1: ', result );
@@ -94,27 +102,30 @@ setTimeout(function() {
 //     console.log( 'ws2: ', result );
 // })
 
+// setTimeout(function ( ) {
+//     d3.remove();
+// }, 3000);
+
 
 // ================ IO ================
 
 
-// // 格式处理器
-// $hub.converter.IOEventFormat = function ( data ) {
-//     return data.code;
-// }
+// 格式处理器
+$hub.converter.IOEventFormat = function ( data ) {
+    return data.code;
+}
 
+const d4 = $hub.IO('http://legox.org:5353').from('mock').convert('IOEventFormat').emit('io-event');
 
-// const d4 = $hub.IO('http://legox.org:5353').convert('IOEventFormat').with('mock', 'io-event1').with('mock', 'io-event2');
+d4.socket.emit('mock', {
+    key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',
+    time: 1000,
+})
 
-// d4.socket.emit('mock', {
-//     key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',
-//     time: 5000,
-// })
+$hub.listen('io-event', ( result ) => {
+    console.log( 'io: ', result );
+})
 
-// $hub.listen('io-event1', ( result ) => {
-//     console.log( 'io1: ', result );
-// })
-
-// $hub.listen('io-event2', ( result ) => {
-//     console.log( 'io2: ', result );
-// })
+setTimeout(function() {
+    d4.remove();
+}, 3000);

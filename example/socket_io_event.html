@@ -12,7 +12,7 @@
 
     <script>
         // 多个关联
-        const dispatcher = $hub.IO('http://legox.org:5353').with('mock', 'io-event1').with('mock', 'io-event2');
+        const dispatcher = $hub.IO('http://legox.org:5353').from('mock').emit('io-event');
 
         // 获取 socket 流
         dispatcher.socket.emit('mock', {
@@ -21,12 +21,14 @@
         })
 
         // 注册监听
-        $hub.listen('io-event1', ( result ) => {
-            console.log( 'io1: ', result );
+        $hub.listen('io-event', ( result ) => {
+            console.log( 'io:', result );
         })
-        $hub.listen('io-event2', ( result ) => {
-            console.log( 'io2: ', result );
-        })
+
+        setTimeout(function ( ) {
+            // 停止监听 IO 注册的流推送
+            dispatcher.remove();
+        }, 3000);
     </script>
 
 

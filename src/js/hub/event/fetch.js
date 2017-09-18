@@ -12,42 +12,54 @@ export default function ( url, args = { } ) {
 
         const { emit, converter } = this;
 
-        let handler = [];
-
         let timer = void 0;
-
-        let runHandler = ( data ) => {
-            handler.forEach(( _h ) => {
-                _h( data );
-            })
-        }
 
         const dispatcher = { };
 
-        let reloadHandler = void 0;
+        let queue = [ ];
 
-        let _converter = void 0;
+        // 出队列
+        let exec = async ( result ) => {
+            if ( queue.length > 0 ) {
+                let _result = result;
+
+                for ( _i of queue ) {
+                    switch ( _i.type ) {
+                        case '__convert__': {
+                            _result = await _i.func( _result );
+                            break;
+                        }
+                        case '__emit__': {
+                            _i.func( _result );
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
         dispatcher.convert = ( key ) => {
             if ( converter[ key ] ) {
-                _converter = converter[ key ];
+                queue.push({
+                    type: '__convert__',
+                    func: converter[ key ],
+                });
             }
             return dispatcher;
         }
 
         // send the HTTP request by fetch, and fetch data flow
         dispatcher.emit = ( key, data ) => {
-            handler.push(async ( result ) => {
-                if ( _converter ) {
-                    result = await _converter( result );
-                }
-
-                if ( data ) {
-                    emit.bind( this )( key, { result, data, } );
-                }
-                else {
-                    emit.bind( this )( key, result );
-                }
+            queue.push({
+                type: '__emit__',
+                func: ( result ) => {
+                    if ( data ) {
+                        emit.bind( this )( key, { result, data, } );
+                    }
+                    else {
+                        emit.bind( this )( key, result );
+                    }
+                },
             })
 
             // 链式多次 emit 去抖
@@ -66,14 +78,14 @@ export default function ( url, args = { } ) {
             fetch( url, args )
                 .then(( res ) => {
                     if ( res.status === 200 && res.json ) {
-                        res.json().then( data => runHandler( data ) );
+                        res.json().then( data => exec( data ) );
                     }
                     else {
-                        runHandler( res );
+                        exec( res );
                     }
                 })
                 .catch(( err ) => {
-                    runHandler( err );
+                    exec( err );
                 });
         }
 

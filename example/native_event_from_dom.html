@@ -14,7 +14,7 @@
 
     <script>
         // 绑定 DOM 事件流 ( 可绑定多个 )
-        const dispatcher = $hub.DOM('button').with('click', 'dom-click-event').with('mousedown', 'dom-mousedown-event');
+        const dispatcher = $hub.DOM('button').from('click').emit('dom-click-event').from('mousedown').emit('dom-mousedown-event');
 
         // 监听 DOM 事件流
         $hub.listen('dom-click-event', ( e ) => {

@@ -25,11 +25,49 @@ export default function ( SFKey, url ) {
 
         const dispatcher = { };
 
-        let _converter = void 0;
+        let queue = [ ];
+
+        let _eventListener = ( res ) => {
+            if ( res.data ) {
+                try {
+                    exec( JSON.parse( res.data ) );
+                } catch ( e ) {
+                    exec( res.data );
+                }
+            }
+            else {
+                exec( res );
+            }
+        };
+
+        _socket.addEventListener('message', _eventListener);
+
+        // 出队列
+        let exec = async ( result ) => {
+            if ( queue.length > 0 ) {
+                let _result = result;
+
+                for ( _i of queue ) {
+                    switch ( _i.type ) {
+                        case '__convert__': {
+                            _result = await _i.func( _result );
+                            break;
+                        }
+                        case '__emit__': {
+                            _i.func( _result );
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
         dispatcher.convert = ( key ) => {
             if ( converter[ key ] ) {
-                _converter = converter[ key ];
+                queue.push({
+                    type: '__convert__',
+                    func: converter[ key ],
+                });
             }
             return dispatcher;
         }
@@ -37,33 +75,23 @@ export default function ( SFKey, url ) {
         dispatcher.socket = _socket;
 
         dispatcher.emit = ( key, data ) => {
-            const handler = async ( result ) => {
-                if ( _converter ) {
-                    result = await _converter( result );
-                }
-
-                if ( data ) {
-                    emit.bind( this )( key, { result, data, } );
-                }
-                else {
-                    emit.bind( this )( key, result );
-                }
-            }
-
-            _socket.addEventListener('message', ( res ) => {
-                if ( res.data ) {
-                    try {
-                        handler( JSON.parse( res.data ) );
-                    } catch ( e ) {
-                        handler( res.data );
+            queue.push({
+                type: '__emit__',
+                func: ( result ) => {
+                    if ( data ) {
+                        emit.bind( this )( key, { result, data, } );
                     }
-                }
-                else {
-                    handler( res );
+                    else {
+                        emit.bind( this )( key, result );
+                    }
                 }
             })
 
             return dispatcher;
+        }
+
+        dispatcher.remove = () => {
+            _socket.removeEventListener('message', _eventListener);
         }
 
         return dispatcher;

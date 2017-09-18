@@ -25,40 +25,99 @@ export default function ( SFKey, url ) {
 
         const dispatcher = { };
 
-        let _converter = void 0;
+        let queue = [ ];
+
+        // 出队列
+        let exec = async ( key, result ) => {
+            let index = void 0;
+
+            queue.forEach(( item, _index ) => {
+                if ( item.type === '__from__' && item.func === key ) {
+                    index = _index;
+                }
+            })
+
+            if ( typeof index !== 'undefined' ) {
+                const _q = queue.slice( index + 1, queue.length );
+
+                if ( _q.length > 0 ) {
+                    let _result = result;
+                    let isBreak = false;
+
+                    for ( _i of _q ) {
+                        if ( isBreak ) {
+                            break;
+                        }
+
+                        switch ( _i.type ) {
+                            case '__convert__': {
+                                _result = await _i.func( _result );
+                                break;
+                            }
+                            case '__emit__': {
+                                _i.func( _result );
+                                break;
+                            }
+                            case '__from__': {
+                                isBreak = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         dispatcher.convert = ( key ) => {
             if ( converter[ key ] ) {
-                _converter = converter[ key ];
+                queue.push({
+                    type: '__convert__',
+                    func: converter[ key ],
+                });
             }
             return dispatcher;
         }
 
         dispatcher.socket = _socket;
 
-        dispatcher.with = ( SKey, key, data ) => {
-            const handler = async ( result ) => {
-                if ( _converter ) {
-                    result = await _converter( result );
-                }
-
-                if ( data ) {
-                    emit.bind( this )( key, { result, data, } );
-                }
-                else {
-                    emit.bind( this )( key, result );
-                }
+        dispatcher.from = ( key ) => {
+            let _eventListener = ( result ) => {
+                exec( key, result );
             }
 
-            _socket.on(SKey, function ( res ) {
-                try {
-                    handler( JSON.parse( res ) );
-                } catch ( e ) {
-                    handler( res );
-                }
-            });
+            queue.push({
+                type: '__from__',
+                func: key,
+                _eventListener,
+            })
+
+            _socket.on( key, _eventListener );
 
             return dispatcher;
+        }
+
+        dispatcher.emit = ( key, data ) => {
+            queue.push({
+                type: '__emit__',
+                func: ( e ) => {
+                    if ( data ) {
+                        emit.bind( this )( key, { event: e, data, } );
+                    }
+                    else {
+                        emit.bind( this )( key, e );
+                    }
+                },
+            })
+
+            return dispatcher;
+        }
+
+        dispatcher.remove = () => {
+            queue.forEach(( item, index ) => {
+            	if ( item.type === '__from__' ) {
+                    _socket.off( item.func, item._eventListener );
+                }
+            });
         }
 
         return dispatcher;

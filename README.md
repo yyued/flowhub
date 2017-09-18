@@ -32,6 +32,9 @@ setInterval(() => {
 
 [→ socket.io event](https://github.com/yyued/hub.js/blob/master/example/socket_io_event.html)
 
+[→ the converter & the chainning](https://github.com/yyued/hub.js/blob/master/example/converter_chainning.html)
+
+
 ## License
 
 MIT

@@ -22,47 +22,95 @@ export default function ( dom ) {
 
             const dispatcher = { };
 
-            let handler = [];
+            let queue = [ ];
 
-            let _converter = void 0;
+            // 出队列
+            let exec = async ( e ) => {
+                const type = e.type;
+
+                let index = void 0;
+
+                queue.forEach(( item, _index ) => {
+                    if ( item.type === '__from__' && item.func === type ) {
+                        index = _index;
+                    }
+                })
+
+                if ( typeof index !== 'undefined' ) {
+                    const _q = queue.slice( index + 1, queue.length );
+
+                    if ( _q.length > 0 ) {
+                        let _e = e;
+                        let isBreak = false;
+
+                        for ( _i of _q ) {
+                            if ( isBreak ) {
+                                break;
+                            }
+
+                            switch ( _i.type ) {
+                                case '__convert__': {
+                                    _e = await _i.func( _e );
+                                    break;
+                                }
+                                case '__emit__': {
+                                    _i.func( _e );
+                                    break;
+                                }
+                                case '__from__': {
+                                    isBreak = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             dispatcher.convert = ( key ) => {
                 if ( converter[ key ] ) {
-                    _converter = converter[ key ];
+                    queue.push({
+                        type: '__convert__',
+                        func: converter[ key ],
+                    })
                 }
                 return dispatcher;
             }
 
-            // dispatcher can emit the native event flow
-            dispatcher.with = ( type, key, data ) => {
-                const _handler = async ( e ) => {
-                    if ( _converter ) {
-                        e = await _converter( e );
-                    }
+            dispatcher.from = ( type ) => {
+                queue.push({
+                    type: '__from__',
+                    func: type,
+                })
 
-                    if ( data ) {
-                        emit.bind( this )( key, { event: e, data, } );
-                    }
-                    else {
-                        emit.bind( this )( key, e );
-                    }
-                }
+                DOM.addEventListener( type, exec );
 
-                handler.push({
-                    type,
-                    handler: _handler,
-                });
+                return dispatcher;
+            }
 
-                DOM.addEventListener(type, _handler);
+            dispatcher.emit = ( key, data ) => {
+                queue.push({
+                    type: '__emit__',
+                    func: ( e ) => {
+                        if ( data ) {
+                            emit.bind( this )( key, { event: e, data, } );
+                        }
+                        else {
+                            emit.bind( this )( key, e );
+                        }
+                    },
+                })
 
                 return dispatcher;
             }
 
             // remove the native event, and stop event flow
             dispatcher.remove = ( ) => {
-                handler.forEach(( { type: _t, handler: _h } ) => {
-                    DOM.removeEventListener( _t, _h );
-                })
+                queue.forEach(( item, index ) => {
+                	if ( item.type === '__from__' ) {
+                        DOM.removeEventListener( item.func, exec );
+                    }
+                });
             }
 
             return dispatcher;
