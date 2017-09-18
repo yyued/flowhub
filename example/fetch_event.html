@@ -12,7 +12,7 @@
 
     <script>
         // 绑定 fetch 事件流（ 可绑定多个 ）
-        const dispatcher = $hub.fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event1').emit('fetch-event2');
+        const dispatcher = $hub.Fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event1').emit('fetch-event2');
 
         setTimeout(() => {
             // 刷新 fetch 事件流

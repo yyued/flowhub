@@ -30,12 +30,12 @@ import store from './event/store';
 /*
  * DOM event srouce
  */
-import DOM from './event/DOM';
+import DOM from './event/dom';
 
 /*
  * fetch event srouce
  */
-import fetch from './event/fetch';
+import Fetch from './event/fetch';
 
 /*
  * socket.io event srouce
@@ -57,12 +57,24 @@ let _socket = {
 
 let _store = { };
 
+let _converter = { };
+
 module.exports = {
 
     /*
      * save the listening observer
      */
     observer: _observer,
+
+    /*
+     * save the store value in object
+     */
+    data: _store,
+
+    /*
+     * save the socket ( WS / IO )
+     */
+    socket: _socket,
 
     /*
      * emit to the observer
@@ -86,16 +98,6 @@ module.exports = {
     removeListen,
 
     /*
-     * save the store value in object
-     */
-    data: _store,
-
-    /*
-     * save the socket ( WS / IO )
-     */
-    socket: _socket,
-
-    /*
      * build the store proxyer
      * @param {object} _store
      * @param {object} _observer
@@ -116,7 +118,7 @@ module.exports = {
      * @param {void | object} args
      * @return {dispatcher | void}
      */
-    fetch,
+    Fetch,
 
     /*
      * WebSocket event can emit flow to the listener.
@@ -133,4 +135,6 @@ module.exports = {
      * @return {dispatcher | void}
      */
     IO,
+
+    converter: _converter,
 }

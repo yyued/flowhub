@@ -8,7 +8,7 @@
 'use strict';
 
 export default function ( SFKey, url ) {
-    const { emit, socket } = this;
+    const { emit, socket, converter } = this;
 
     if ( !url ) {
         url = SFKey;
@@ -25,10 +25,23 @@ export default function ( SFKey, url ) {
 
         const dispatcher = { };
 
+        let _converter = void 0;
+
+        dispatcher.convert = ( key ) => {
+            if ( converter[ key ] ) {
+                _converter = converter[ key ];
+            }
+            return dispatcher;
+        }
+
         dispatcher.socket = _socket;
 
         dispatcher.emit = ( key, data ) => {
-            const handler = ( result ) => {
+            const handler = async ( result ) => {
+                if ( _converter ) {
+                    result = await _converter( result );
+                }
+
                 if ( data ) {
                     emit.bind( this )( key, { result, data, } );
                 }

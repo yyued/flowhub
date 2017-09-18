@@ -10,7 +10,7 @@
 export default function ( url, args = { } ) {
     if ( url ) {
 
-        const { emit } = this;
+        const { emit, converter } = this;
 
         let handler = [];
 
@@ -22,13 +22,26 @@ export default function ( url, args = { } ) {
             })
         }
 
-        const dispatcher = [];
+        const dispatcher = { };
 
         let reloadHandler = void 0;
 
+        let _converter = void 0;
+
+        dispatcher.convert = ( key ) => {
+            if ( converter[ key ] ) {
+                _converter = converter[ key ];
+            }
+            return dispatcher;
+        }
+
         // send the HTTP request by fetch, and fetch data flow
         dispatcher.emit = ( key, data ) => {
-            handler.push(( result ) => {
+            handler.push(async ( result ) => {
+                if ( _converter ) {
+                    result = await _converter( result );
+                }
+
                 if ( data ) {
                     emit.bind( this )( key, { result, data, } );
                 }
@@ -37,10 +50,11 @@ export default function ( url, args = { } ) {
                 }
             })
 
-            // 多次 emit 去抖
+            // 链式多次 emit 去抖
             if ( timer ) {
                 clearTimeout( timer );
             }
+
             timer = setTimeout(() => {
                 dispatcher.reload();
             }, 0);

@@ -34,7 +34,13 @@ import $hub from './hub';
 // }, 1000);
 
 // ================ 绑定 DOM 事件流 ================
-const d1 = $hub.DOM('button').with('click', 'dom-click-event').with('mousedown', 'dom-mousedown-event');
+
+// 格式处理器
+$hub.converter.DOMEventFormat = function ( e ) {
+    return e.target;
+}
+
+const d1 = $hub.DOM('button').convert('DOMEventFormat').with('click', 'dom-click-event').with('mousedown', 'dom-mousedown-event');
 
 // 监听对应的 DOM 事件流
 $hub.listen('dom-click-event', ( e ) => {
@@ -50,8 +56,14 @@ setTimeout(function() {
     d1.remove();
 }, 10000);
 
-// ================ 绑定 fetch 事件流 ================
-// const d2 = $hub.fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event1').emit('fetch-event2');
+// ================ 绑定 Fetch 事件流 ================
+
+// 格式处理器
+// $hub.converter.FetchEventFormat = function ( data ) {
+//     return data.code;
+// }
+
+// const d2 = $hub.Fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').convert('FetchEventFormat').emit('fetch-event1').emit('fetch-event2');
 
 // setTimeout(() => {
 //     // 刷新 fetch 事件流
@@ -67,7 +79,13 @@ setTimeout(function() {
 // })
 
 // ================ WS ================
-// const d3 = $hub.WS('ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc').emit('ws-event1').emit('ws-event2');
+
+// // 格式处理器
+// $hub.converter.WSEventFormat = function ( data ) {
+//     return data.code;
+// }
+
+// const d3 = $hub.WS('ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc').convert('WSEventFormat').emit('ws-event1').emit('ws-event2');
 
 // $hub.listen('ws-event1', ( result ) => {
 //     console.log( 'ws1: ', result );
@@ -78,7 +96,15 @@ setTimeout(function() {
 
 
 // ================ IO ================
-// const d4 = $hub.IO('http://legox.org:5353').with('mock', 'io-event1').with('mock', 'io-event2');
+
+
+// // 格式处理器
+// $hub.converter.IOEventFormat = function ( data ) {
+//     return data.code;
+// }
+
+
+// const d4 = $hub.IO('http://legox.org:5353').convert('IOEventFormat').with('mock', 'io-event1').with('mock', 'io-event2');
 
 // d4.socket.emit('mock', {
 //     key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',

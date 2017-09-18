@@ -18,15 +18,28 @@ export default function ( dom ) {
         }
 
         if ( DOM ) {
-            const { emit } = this;
+            const { emit, format, converter } = this;
 
             const dispatcher = { };
 
             let handler = [];
 
+            let _converter = void 0;
+
+            dispatcher.convert = ( key ) => {
+                if ( converter[ key ] ) {
+                    _converter = converter[ key ];
+                }
+                return dispatcher;
+            }
+
             // dispatcher can emit the native event flow
             dispatcher.with = ( type, key, data ) => {
-                const _handler = ( e ) => {
+                const _handler = async ( e ) => {
+                    if ( _converter ) {
+                        e = await _converter( e );
+                    }
+
                     if ( data ) {
                         emit.bind( this )( key, { event: e, data, } );
                     }
