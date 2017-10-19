@@ -110,22 +110,36 @@ import $hub from './hub';
 // ================ IO ================
 
 
-// 格式处理器
-$hub.converter.IOEventFormat = function ( data ) {
-    return data.code;
-}
+// // 格式处理器
+// $hub.converter.IOEventFormat = function ( data ) {
+//     return data.code;
+// }
 
-const d4 = $hub.IO('http://legox.org:5353').from('mock').convert('IOEventFormat').emit('io-event');
+// const d4 = $hub.IO('http://legox.org:5353').from('mock').convert('IOEventFormat').emit('io-event');
 
-d4.socket.emit('mock', {
-    key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',
-    time: 1000,
+// d4.socket.emit('mock', {
+//     key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',
+//     time: 1000,
+// })
+
+// $hub.listen('io-event', ( result ) => {
+//     console.log( 'io: ', result );
+// })
+
+// setTimeout(function() {
+//     d4.remove();
+// }, 3000);
+
+// ================ Chain ================
+
+$hub.chain('test').pipe(
+    ( d ) => new Promise( ( resolve ) => setTimeout( () => resolve( d + 1 ), 2000 ) ),
+    ( d ) => d + 2,
+    ( d ) => d + 3,
+)
+
+$hub.listen('@chain/test', ( d ) => {
+    console.log( d );
 })
 
-$hub.listen('io-event', ( result ) => {
-    console.log( 'io: ', result );
-})
-
-setTimeout(function() {
-    d4.remove();
-}, 3000);
+$hub.emit( '@chain/test', 1 ); // 7

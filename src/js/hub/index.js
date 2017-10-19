@@ -1,7 +1,6 @@
 /**
  * @file: hub
  * @author: lijialiang
- * @team: UED中心
  * @export: umd
  * @export name: $hub
  * @export file: hub
@@ -20,7 +19,7 @@ import listen from './event/listen';
 /*
  * removeListen event
  */
-import removeListen from './event/removeListen';
+import removeListen from './event/remove_listen';
 
 /*
  * store proxy
@@ -47,6 +46,11 @@ import IO from './event/io';
  */
 import WS from './event/ws';
 
+/*
+ * chain event
+ */
+import chain from './event/chain';
+
 let _observer = { };
 
 // 用于存储一些持久化链接
@@ -59,6 +63,8 @@ let _store = { };
 
 let _converter = { };
 
+let _chainer = { };
+
 module.exports = {
 
     /*
@@ -70,6 +76,8 @@ module.exports = {
      * save the store value in object
      */
     data: _store,
+
+    chainer: _chainer,
 
     /*
      * save the socket ( WS / IO )
@@ -136,5 +144,13 @@ module.exports = {
      */
     IO,
 
+    /*
+     * chain event
+     * @param {String} name
+     * @return {object} chainer
+     */
+    chain,
+
     converter: _converter,
+
 }

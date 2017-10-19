@@ -7,8 +7,23 @@
 
 'use strict';
 
+const iterineChainer = async ( chainer, value ) => {
+    for ( let _c of chainer ) {
+        value = await _c( value );
+    }
+    return { data: value };
+}
+
+const toObserver = ( observer, key, value ) => {
+    if ( typeof observer[ key ] !== 'undefined' ) {
+        observer[ key ].forEach(( handler, index ) => {
+            handler( value );
+        });
+    }
+}
+
 export default function ( key, value ) {
-    const { observer, data } = this;
+    const { observer, data, chainer } = this;
 
     if ( key.indexOf( '@store/' ) === 0 ) {
         const _key = key.split( '@store/' )[ 1 ];
@@ -17,9 +32,19 @@ export default function ( key, value ) {
         }
     }
 
-    if ( typeof observer[ key ] !== 'undefined' ) {
-        observer[ key ].forEach(( handler, index ) => {
-            handler( value );
-        });
+    if ( key.indexOf( '@chain/' ) === 0 ) {
+        const _key = key.split( '@chain/' )[ 1 ];
+        if ( typeof chainer[ _key ] !== 'undefined' ) {
+            iterineChainer( chainer[ _key ], value )
+                .then(( { data } ) => {
+                    toObserver( observer, key, data );
+                })
+                .catch(( e ) => {
+                    throw e;
+                })
+            return void 0;
+        }
     }
+
+    toObserver( observer, key, value );
 }

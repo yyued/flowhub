@@ -1,31 +1,27 @@
 /*
  * WebSocket event srouce
- * @param {SFKey} the key of socket
  * @param {String} url
  * @return {dispatcher | void}
  */
 
 'use strict';
 
-export default function ( SFKey, url ) {
+export default function ( url ) {
     const { emit, socket, converter } = this;
 
-    if ( !url ) {
-        url = SFKey;
-    }
-
     if ( url ) {
+        const dispatcher = { };
+
+        let queue = [ ];
+
         const _socket = new WebSocket( url );
 
         socket.ws.push({
-            key: SFKey,
             url,
             socket,
         })
 
-        const dispatcher = { };
-
-        let queue = [ ];
+        dispatcher.socket = _socket;
 
         let _eventListener = ( res ) => {
             if ( res.data ) {
@@ -71,8 +67,6 @@ export default function ( SFKey, url ) {
             }
             return dispatcher;
         }
-
-        dispatcher.socket = _socket;
 
         dispatcher.emit = ( key, data ) => {
             queue.push({

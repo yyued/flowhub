@@ -8,7 +8,7 @@
 'use strict';
 
 export default function ( key, handler ) {
-    const { observer, data } = this;
+    const { observer, data, chainer } = this;
 
     if ( typeof observer[ key ] === 'undefined' ) {
         observer[ key ] = [ ];

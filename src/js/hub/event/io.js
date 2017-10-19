@@ -1,31 +1,27 @@
 /*
  * socket.io event srouce
- * @param {SFKey} the key of socket
  * @param {String} url
  * @return {dispatcher | void}
  */
 
 'use strict';
 
-export default function ( SFKey, url ) {
+export default function ( url ) {
     const { emit, socket, converter } = this;
 
-    if ( !url ) {
-        url = SFKey;
-    }
-
     if ( url ) {
-        const _socket = io( url );
-
-        socket.io.push({
-            key: SFKey,
-            url,
-            socket,
-        })
-
         const dispatcher = { };
 
         let queue = [ ];
+
+        const _socket = io( url );
+
+        dispatcher.socket = _socket;
+
+        socket.io.push({
+            url,
+            socket,
+        })
 
         // 出队列
         let exec = async ( key, result ) => {
@@ -77,8 +73,6 @@ export default function ( SFKey, url ) {
             }
             return dispatcher;
         }
-
-        dispatcher.socket = _socket;
 
         dispatcher.from = ( key ) => {
             let _eventListener = ( result ) => {
