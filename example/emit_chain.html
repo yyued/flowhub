@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> store value </title>
+</head>
+<body>
+
+    <script src="../dist/hub.min.js"></script>
+
+    <script>
+        $hub.chain('test').pipe(
+            ( d ) => new Promise( ( resolve ) => setTimeout( () => resolve( d + 1 ), 2000 ) ),
+            ( d ) => d + 2,
+            ( d ) => d + 3,
+        )
+
+        $hub.listen('@chain/test', ( d ) => {
+            console.log( d );
+        })
+
+        $hub.emit( '@chain/test', 1 ); // 7
+    </script>
+
+</body>
+</html>
