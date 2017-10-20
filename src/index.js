@@ -6,6 +6,8 @@
  * @export file: hub
  */
 
+'use strict';
+
 /*
  * emit event
  */

@@ -2,10 +2,14 @@
 
 Through a simple way to deal with the event flow from customized dispatcher / DOM element / Fetch request / WebSocket / socket io.
 
+[中文](./README.zh-CN.md)
+
 ## Simple Usage
 
+`npm i hub-js`
+
 ```js
-import $hub from './dist/hub.min.js';
+import $hub from 'hub-js';
 
 // register an event listener
 $hub.listen('test', ( data ) => {

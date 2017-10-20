@@ -1,7 +1,27 @@
 {
   "name": "hub-js",
-  "version": "0.0.3",
-  "repository": {},
-  "author": "UED.lijialiang",
-  "license": "MIT"
+  "version": "0.1.0",
+  "description": "",
+  "main": "./dist/hub.min.js",
+  "scripts": {
+    "build": "node ./build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yyued/hub.js.git"
+  },
+  "author": "lijialiang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yyued/hub.js/issues"
+  },
+  "homepage": "https://github.com/yyued/hub.js#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "webpack": "^3.8.1"
+  }
 }
