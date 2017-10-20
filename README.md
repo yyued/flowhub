@@ -8,7 +8,7 @@ Through a simple way to deal with the event streams from **customized dispatcher
 
 [RxJS](https://github.com/reactivex/rxjs) is a good tool to handle complex data streams that make up the event-based programs. But for some small and medium-sized projects, it is a bit cumbersome, and it requires a certain amount of learning costs for developers.
 
-In contrast, **hub.js** is more simpler and lightweight ( ungzip only 6kb ). It satisfies most of the situation event-driven situation, suitable for dealing with a variety of  event streams.
+In contrast, **[hub.js](https://github.com/yyued/hub.js)** is more simpler and lightweight ( ungzip only 6kb ). It satisfies most of the situation event-driven situation, suitable for dealing with a variety of  event streams.
 
 ## Installing
 
