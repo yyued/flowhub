@@ -7,6 +7,8 @@
 
 'use strict';
 
+const util = require('./util');
+
 export default function ( url, args = { } ) {
     if ( url ) {
 
@@ -18,23 +20,24 @@ export default function ( url, args = { } ) {
 
         let queue = [ ];
 
-        // 出队列
-        let exec = async ( result ) => {
+        // out of queue
+        let exec = ( result ) => {
             if ( queue.length > 0 ) {
-                let _result = result;
-
-                for ( _i of queue ) {
+                util.iterator(queue, ( _i, next ) => {
                     switch ( _i.type ) {
                         case '__convert__': {
-                            _result = await _i.func( _result );
+                            util.await(_i.func( result ), ( data ) => {
+                                result = data;
+                                next();
+                            })
                             break;
                         }
                         case '__emit__': {
-                            _i.func( _result );
+                            _i.func( result );
                             break;
                         }
                     }
-                }
+                })
             }
         }
 

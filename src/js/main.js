@@ -47,7 +47,11 @@ import $hub from './hub';
 //     return [ e.target, e.type ];
 // }
 
-// const d1 = $hub.DOM('button').from('click').convert('DOMEventFormat1').emit('dom-click-event').from('mousedown').convert('DOMEventFormat2').emit('dom-mousedown-event');
+// // const d1 = $hub.DOM('button')
+// const d1 = $hub.DOM('button')
+//     .from('click').convert('DOMEventFormat1').emit('dom-click-event')
+//     .from('mousedown').convert('DOMEventFormat2').emit('dom-mousedown-event');
+
 
 // // 监听对应的 DOM 事件流
 // $hub.listen('dom-click-event', ( e ) => {
@@ -67,33 +71,52 @@ import $hub from './hub';
 // ================ 绑定 Fetch 事件流 ================
 
 // // 格式处理器
-// $hub.converter.FetchEventFormat = function ( data ) {
+// $hub.converter.FetchEventFormat1 = function ( data ) {
 //     return data.code;
 // }
 
-// const d2 = $hub.Fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event1').convert('FetchEventFormat').emit('fetch-event2');
+// $hub.converter.FetchEventFormat2 = function ( data ) {
+//     return new Promise(( resolve, reject ) => {
+//        setTimeout(function() {
+//             resolve( ++data );
+//        }, 2000);
+//     });
+// }
 
-// setTimeout(() => {
-//     // 刷新 fetch 事件流
-//     d2.reload();
-// }, 2000);
+// const d2 = $hub.Fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4')
+// // .emit('fetch-event1')
+// .convert('FetchEventFormat1').convert('FetchEventFormat2').emit('fetch-event2');
+
+// // setTimeout(() => {
+// //     // 刷新 fetch 事件流
+// //     d2.reload();
+// // }, 2000);
 
 // // 监听对应的 fetch 事件流
-// $hub.listen('fetch-event1', ( result ) => {
-//     console.log( 'fetch1: ', result);
-// })
+// // $hub.listen('fetch-event1', ( result ) => {
+// //     console.log( 'fetch1: ', result);
+// // })
 // $hub.listen('fetch-event2', ( result ) => {
-//     console.log( 'fetch2: ', result);
+//     console.log( 'fetch2-1: ', result);
+// })
+
+// $hub.listen('fetch-event2', ( result ) => {
+//     console.log( 'fetch2-2: ', result);
 // })
 
 // ================ WS ================
 
 // // 格式处理器
 // $hub.converter.WSEventFormat = function ( data ) {
-//     return data.code;
+//     return new Promise(( resolve, reject ) => {
+//         setTimeout(() => {
+//             resolve( data.code );
+//         }, 1000);
+//     });
 // }
 
-// const d3 = $hub.WS('ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc/1000').emit('ws-event1').convert('WSEventFormat').emit('ws-event2');
+// const d3 = $hub.WS('ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc/1000').emit('ws-event1')
+// .convert('WSEventFormat').emit('ws-event2');
 
 // $hub.listen('ws-event1', ( result ) => {
 //     console.log( 'ws1: ', result );
@@ -112,7 +135,11 @@ import $hub from './hub';
 
 // // 格式处理器
 // $hub.converter.IOEventFormat = function ( data ) {
-//     return data.code;
+//     return new Promise(( resolve, reject ) => {
+//         setTimeout(( ) => {
+//             resolve( data.code );
+//         }, 1000);
+//     });
 // }
 
 // const d4 = $hub.IO('http://legox.org:5353').from('mock').convert('IOEventFormat').emit('io-event');

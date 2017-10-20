@@ -7,11 +7,17 @@
 
 'use strict';
 
-const iterineChainer = async ( chainer, value ) => {
-    for ( let _c of chainer ) {
-        value = await _c( value );
-    }
-    return { data: value };
+const util = require('./util');
+
+const iterineChainer = ( chainer, value, callback ) => {
+    util.iterator(chainer, ( _c , next ) => {
+        util.await( _c( value ), ( data ) => {
+            value = data;
+            next();
+        })
+    }, ( ) => {
+        callback( value );
+    })
 }
 
 const toObserver = ( observer, key, value ) => {
@@ -35,13 +41,9 @@ export default function ( key, value ) {
     if ( key.indexOf( '@chain/' ) === 0 ) {
         const _key = key.split( '@chain/' )[ 1 ];
         if ( typeof chainer[ _key ] !== 'undefined' ) {
-            iterineChainer( chainer[ _key ], value )
-                .then(( { data } ) => {
-                    toObserver( observer, key, data );
-                })
-                .catch(( e ) => {
-                    throw e;
-                })
+            iterineChainer( chainer[ _key ], value, ( data ) => {
+                toObserver( observer, key, data );
+            });
             return void 0;
         }
     }

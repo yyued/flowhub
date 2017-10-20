@@ -6,6 +6,8 @@
 
 'use strict';
 
+const util = require('./util');
+
 export default function ( url ) {
     const { emit, socket, converter } = this;
 
@@ -23,8 +25,8 @@ export default function ( url ) {
             socket,
         })
 
-        // 出队列
-        let exec = async ( key, result ) => {
+        // out of queue
+        let exec = ( key, result ) => {
             let index = void 0;
 
             queue.forEach(( item, _index ) => {
@@ -40,26 +42,29 @@ export default function ( url ) {
                     let _result = result;
                     let isBreak = false;
 
-                    for ( _i of _q ) {
-                        if ( isBreak ) {
-                            break;
+                    util.iterator( _q, ( _i, next ) => {
+                        if ( !isBreak ) {
+                            switch ( _i.type ) {
+                                case '__convert__': {
+                                    util.await(_i.func( _result ), ( data ) => {
+                                        _result = data;
+                                        next();
+                                    })
+                                    break;
+                                }
+                                case '__emit__': {
+                                    _i.func( _result );
+                                    next();
+                                    break;
+                                }
+                                case '__from__': {
+                                    isBreak = true;
+                                    next();
+                                    break;
+                                }
+                            }
                         }
-
-                        switch ( _i.type ) {
-                            case '__convert__': {
-                                _result = await _i.func( _result );
-                                break;
-                            }
-                            case '__emit__': {
-                                _i.func( _result );
-                                break;
-                            }
-                            case '__from__': {
-                                isBreak = true;
-                                break;
-                            }
-                        }
-                    }
+                    })
                 }
             }
         }

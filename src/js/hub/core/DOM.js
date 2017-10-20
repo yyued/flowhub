@@ -6,6 +6,8 @@
 
 'use strict';
 
+const util = require('./util');
+
 export default function ( dom ) {
     if ( dom ) {
         let DOM = void 0;
@@ -24,8 +26,8 @@ export default function ( dom ) {
 
             let queue = [ ];
 
-            // 出队列
-            let exec = async ( e ) => {
+            // out of queue
+            let exec = ( e ) => {
                 const type = e.type;
 
                 let index = void 0;
@@ -43,26 +45,29 @@ export default function ( dom ) {
                         let _e = e;
                         let isBreak = false;
 
-                        for ( _i of _q ) {
-                            if ( isBreak ) {
-                                break;
+                        util.iterator( _q, ( _i, next ) => {
+                            if ( !isBreak ) {
+                                switch ( _i.type ) {
+                                    case '__convert__': {
+                                        util.await(_i.func( _e ), ( data ) => {
+                                            _e = data;
+                                            next();
+                                        })
+                                        break;
+                                    }
+                                    case '__emit__': {
+                                        _i.func( _e );
+                                        next();
+                                        break;
+                                    }
+                                    case '__from__': {
+                                        isBreak = true;
+                                        next();
+                                        break;
+                                    }
+                                }
                             }
-
-                            switch ( _i.type ) {
-                                case '__convert__': {
-                                    _e = await _i.func( _e );
-                                    break;
-                                }
-                                case '__emit__': {
-                                    _i.func( _e );
-                                    break;
-                                }
-                                case '__from__': {
-                                    isBreak = true;
-                                    break;
-                                }
-                            }
-                        }
+                        })
                     }
                 }
             }

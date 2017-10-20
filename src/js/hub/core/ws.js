@@ -6,6 +6,8 @@
 
 'use strict';
 
+const util = require('./util');
+
 export default function ( url ) {
     const { emit, socket, converter } = this;
 
@@ -38,23 +40,27 @@ export default function ( url ) {
 
         _socket.addEventListener('message', _eventListener);
 
-        // 出队列
-        let exec = async ( result ) => {
+        // out of queue
+        let exec = ( result ) => {
             if ( queue.length > 0 ) {
                 let _result = result;
 
-                for ( _i of queue ) {
+                util.iterator( queue, ( _i, next ) => {
                     switch ( _i.type ) {
                         case '__convert__': {
-                            _result = await _i.func( _result );
+                            util.await(_i.func( _result ), ( data ) => {
+                                _result = data;
+                                next();
+                            })
                             break;
                         }
                         case '__emit__': {
                             _i.func( _result );
+                            next();
                             break;
                         }
                     }
-                }
+                });
             }
         }
 
