@@ -1,12 +1,22 @@
 # hub.js
 
-Through a simple way to deal with the event flow from customized dispatcher / DOM element / Fetch request / WebSocket / socket io.
+Through a simple way to deal with the event flow from **customized dispatcher** / **DOM element** / **Fetch request** / **WebSocket** / **socket io**.
 
 [中文](./README.zh-CN.md)
 
-## Simple Usage
+## Installing
 
-`npm i hub-js`
+```sh
+npm i hub-js
+```
+
+or
+
+```html
+<script src="./dist/index.min.js"></script>
+```
+
+## Simple Usage
 
 ```js
 import $hub from 'hub-js';

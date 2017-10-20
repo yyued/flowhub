@@ -2,6 +2,18 @@
 
 通过简单的方式去处理来自 **自定义发布者** / **DOM 元素** / **Fetch 请求** / **WebSocket** / **socket io** 事件流。
 
+## 安装
+
+```sh
+npm i hub-js
+```
+
+或者
+
+```html
+<script src="./dist/index.min.js"></script>
+```
+
 ## 简单使用
 `npm i hub-js`
 
