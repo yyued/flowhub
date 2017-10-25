@@ -15,13 +15,15 @@
             ( d ) => new Promise( ( resolve ) => setTimeout( () => resolve( d + 1 ), 2000 ) ),
             ( d ) => d + 2,
             ( d ) => d + 3,
+        ).pipe(
+            ( d ) => d + 3,
         )
 
         $hub.listen('@chain/test', ( d ) => {
             console.log( d );
         })
 
-        $hub.emit( '@chain/test', 1 ); // 7
+        $hub.emit( '@chain/test', 1 ); // 10
     </script>
 
 </body>

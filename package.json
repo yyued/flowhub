@@ -1,7 +1,7 @@
 {
   "name": "hub-js",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.1.1",
+  "description": "Through a simple way to deal with the event streams",
   "main": "./dist/hub.min.js",
   "scripts": {
     "build": "node ./build"
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/yyued/hub.js.git"
   },
   "author": "lijialiang",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/yyued/hub.js/issues"
   },
@@ -23,5 +23,10 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.24.1",
     "webpack": "^3.8.1"
-  }
+  },
+  "dependencies": {},
+  "keywords": [
+    "event",
+    "streams"
+  ]
 }

@@ -4,9 +4,9 @@
 
 ## 为什么使用
 
-[RxJS](https://github.com/reactivex/rxjs) 是一个很好的库去处理复杂的数据流，构成基于事件的程序。但对于一些中小型项目来说，它就显得有点笨重了，并且它对开发人员需要一定的学习成本。
+[RxJS](https://github.com/reactivex/rxjs) 是一个很好的库去处理复杂的数据流，构成基于事件的程序。但对于一些中小型项目来说，就显得有点笨重了，并且对开发人员 需要一定的学习成本。
 
-相对来说, **[hub.js](https://github.com/yyued/hub.js)** 显得更加简单，更加轻量 ( ungzip 仅 6kb )。它满足绝大部分情况事件驱动的情况，适合用于处理各种事件流。
+相对来说, **[hub.js](https://github.com/yyued/hub.js)** 显得更加简单，更加轻量 ( ungzip 仅 6kb )。它能满足绝大部分情况事件驱动的情况，适合用于处理各种事件流。
 
 ## 安装
 

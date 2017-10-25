@@ -11,6 +11,7 @@ ${ packageJSON.name }
 
 @file: [file]
 @author: ${ packageJSON.author }
+@version: ${ packageJSON.version }
 @update: ${ ( new Date() ).format('YYYY-MM-DD hh:mm:ss') }
 
 (c) 2017 YY UEDC
