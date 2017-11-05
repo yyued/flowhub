@@ -11,7 +11,7 @@
 ## 安装
 
 ```sh
-npm i hub-js
+npm i hub-js --save
 ```
 
 或者

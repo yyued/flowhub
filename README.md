@@ -13,7 +13,7 @@ In contrast, **[hub.js](https://github.com/yyued/hub.js)** is more simpler and l
 ## Installing
 
 ```sh
-npm i hub-js
+npm i hub-js --save
 ```
 
 or
