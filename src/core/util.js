@@ -12,7 +12,9 @@ module.exports = {
             })
         }
         else if ( index >= list.length - 1 ) {
-            callback();
+            if ( callback ) {
+                callback();
+            }
         }
     },
     await ( result, callback ) {

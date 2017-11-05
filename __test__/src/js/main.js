@@ -35,38 +35,38 @@ import $hub from './hub';
 
 // ================ 绑定 DOM 事件流 ================
 
-// // 格式处理器
-// $hub.converter.DOMEventFormat1 = function ( e ) {
-//     return new Promise((resolve, reject) => {
-//         setTimeout(function() {
-//             resolve( [ e.type, e.target ] );
-//         }, 2000);
-//     })
-// }
-// $hub.converter.DOMEventFormat2 = function ( e ) {
-//     return [ e.target, e.type ];
-// }
+// 格式处理器
+$hub.converter.DOMEventFormat1 = function ( e ) {
+    return new Promise((resolve, reject) => {
+        setTimeout(function() {
+            resolve( [ e.type, e.target ] );
+        }, 2000);
+    })
+}
+$hub.converter.DOMEventFormat2 = function ( e ) {
+    return [ e.target, e.type ];
+}
 
-// // const d1 = $hub.DOM('button')
 // const d1 = $hub.DOM('button')
-//     .from('click').convert('DOMEventFormat1').emit('dom-click-event')
-//     .from('mousedown').convert('DOMEventFormat2').emit('dom-mousedown-event');
+const d1 = $hub.DOM('button')
+    .from('click').convert('DOMEventFormat1').emit('dom-click-event')
+    .from('mousedown').convert('DOMEventFormat2').emit('dom-mousedown-event');
 
 
-// // 监听对应的 DOM 事件流
-// $hub.listen('dom-click-event', ( e ) => {
-//     console.log( 'button click', e );
-// })
+// 监听对应的 DOM 事件流
+$hub.listen('dom-click-event', ( e ) => {
+    console.log( 'button click', e );
+})
 
-// $hub.listen('dom-mousedown-event', ( e ) => {
-//     console.log( 'button mousedown', e );
-// })
+$hub.listen('dom-mousedown-event', ( e ) => {
+    console.log( 'button mousedown', e );
+})
 
-// setTimeout(function() {
-//     console.log( '---------- remove ----------' );
-//     // 移除 DOM 监听事件，停止 发送事件流
-//     d1.remove();
-// }, 10000);
+setTimeout(function() {
+    console.log( '---------- remove ----------' );
+    // 移除 DOM 监听事件，停止 发送事件流
+    d1.remove();
+}, 10000);
 
 // ================ 绑定 Fetch 事件流 ================
 
@@ -159,16 +159,35 @@ import $hub from './hub';
 
 // ================ Chain ================
 
-$hub.chain('test').pipe(
-    ( d ) => new Promise( ( resolve ) => setTimeout( () => resolve( d + 1 ), 2000 ) ),
-    ( d ) => d + 2,
-    ( d ) => d + 3,
-).pipe(
-    ( d ) => d + 3,
-)
+// $hub.chain('test').pipe(
+//     ( d ) => new Promise( ( resolve ) => setTimeout( () => resolve( d + 1 ), 2000 ) ),
+//     ( d ) => d + 2,
+//     ( d ) => d + 3,
+// ).pipe(
+//     ( d ) => d + 3,
+// ).pipe(
+//     ( d, exit ) => {
+//         if ( d > 10 ) {
+//             exit( 'error > 10' );
+//         }
+//         else {
+//             return d;
+//         }
+//     }
+// )
 
-$hub.listen('@chain/test', ( d ) => {
-    console.log( d );
-})
+// $hub.listen('@chain/test', ( d ) => {
+//     console.log( d );
+// }, ( e ) => {
+//     // exit callback
+//     console.error( e );
+// }, ( ) => {
+//     // finally callback
+//     console.info( 'finally.' );
+// })
 
-$hub.emit( '@chain/test', 1 ); // 10
+// $hub.emit( '@chain/test', 1 ); // 10
+
+// setTimeout(( ) => {
+//     $hub.emit( '@chain/test', 3 );
+// }, 3000);
