@@ -12,19 +12,17 @@ module.exports = {
             })
         }
         else if ( index >= list.length - 1 ) {
-            if ( callback ) {
-                callback();
-            }
+            callback && callback();
         }
     },
     await ( result, callback ) {
         if ( result.then ) {
             result.then( ( data ) => {
-                callback( data );
+                callback && callback( data );
             } )
         }
         else {
-            callback( result );
+            callback && callback( result );
         }
     }
 };

@@ -1,5 +1,9 @@
 # hub.js
 
+[![](https://img.shields.io/badge/npm-v0.1.2-green.svg)](https://www.npmjs.org/package/hub-js)
+[![](https://img.shields.io/badge/size-%3C7kb-blue.svg)](https://www.npmjs.org/package/hub-js)
+[![](https://img.shields.io/badge/Browser-%3E%3DIE8-blue.svg)](https://www.npmjs.org/package/hub-js)
+
 Through a simple way to deal with the event streams from **customized dispatcher** / **DOM element** / **Fetch request** / **WebSocket** / **socket io**.
 
 [简体中文](./README.zh-CN.md)

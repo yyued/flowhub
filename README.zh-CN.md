@@ -1,5 +1,9 @@
 # hub.js
 
+[![](https://img.shields.io/badge/npm-v0.1.2-green.svg)](https://www.npmjs.org/package/hub-js)
+[![](https://img.shields.io/badge/size-%3C7kb-blue.svg)](https://www.npmjs.org/package/hub-js)
+[![](https://img.shields.io/badge/Browser-%3E%3DIE8-blue.svg)](https://www.npmjs.org/package/hub-js)
+
 通过简单的方式去处理来自 **自定义发布者** / **DOM 元素** / **Fetch 请求** / **WebSocket** / **socket io** 事件流。
 
 ## 为什么使用
