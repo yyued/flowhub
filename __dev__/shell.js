@@ -9,13 +9,18 @@ module.exports = ( param ) => {
     const src = path.resolve( folder, '../src' );
     const source = path.resolve( folder, './src/js/hub' );
 
+    const nodePath = '/Users/lijialiang/.nvm/versions/node/v8.6.0/bin/node';
+
+    shell.config.execPath = nodePath;
+
     del([ `${ src }/**/*` ], { force: true }, () => {
         gulp.src(`${ source }/**/*`)
             .pipe(gulp.dest( src ))
             .on('end', () => {
                 shell.cd( root );
-                shell.exec('npm run build');
-                messager.success();
+                if ( shell.exec( `${ nodePath } ${ root }/build/index.js` ).code == 0 ) {
+                    messager.success();
+                }
             })
     });
 }

@@ -2,12 +2,15 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const fs = require('fs-extra');
 
 const util = require('./util');
 const packageJSON = require('../package.json');
 
+const distFileName = 'hub.min.js';
+
 const banner = `
-${ packageJSON.name }
+hub.js
 
 @file: [file]
 @author: ${ packageJSON.author }
@@ -24,7 +27,7 @@ const configuration = {
     },
     output: {
         path: path.resolve( __dirname, '../dist' ),
-        filename: 'hub.min.js',
+        filename: distFileName,
         libraryTarget: 'umd',
         // global window object name
         library: '$hub',
@@ -75,7 +78,23 @@ const configuration = {
     ],
 }
 
+const distFile = path.resolve( __dirname, `../dist/${ distFileName }` );
+const testFolder = path.resolve( __dirname, `../__test__` );
+const testFile = `${ testFolder }/src/assets/${ distFileName }`;
+
 webpack( configuration, ( err, stats ) => {
     if ( err ) throw err;
-    console.log( '[build success]' );
+
+    const success = ( ) => {
+        console.info( '[build success]' );
+    }
+
+    if ( fs.existsSync( testFolder ) ) {
+        fs.copy( distFile, testFile ).then(() => {
+            success();
+        })
+    }
+    else {
+        success();
+    }
 });
