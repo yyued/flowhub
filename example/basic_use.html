@@ -21,6 +21,9 @@
         setInterval(() => {
             // 触发 test 事件流
             $hub.emit('test', { code: 1 });
+
+            // 解除监听
+            listener.remove();
         }, 1000);
     </script>
 

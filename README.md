@@ -23,7 +23,7 @@ npm i hub-js --save
 or
 
 ```html
-<script src="./dist/hub.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hub-js/dist/hub.min.js"></script>
 ```
 
 ## Simple Usage
