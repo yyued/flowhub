@@ -35,16 +35,16 @@
         // $hub.IO('https://xxx').from('x1').convert('converter').emit('e1').from('x2').emit('e1');
 
         // 监听 DOM 事件流
-        $hub.listen('dom-click-event', ( e ) => {
+        $hub.on('dom-click-event', ( e ) => {
             console.log( 'button click', e );
         })
-        $hub.listen('dom-mousedown-event', ( e ) => {
+        $hub.on('dom-mousedown-event', ( e ) => {
             console.log( 'button mousedown', e );
         })
 
         setTimeout(function() {
             // 移除 DOM 监听事件，停止 发送事件流
-            dispatcher.remove();
+            dispatcher.off();
         }, 10000);
     </script>
 

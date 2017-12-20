@@ -1,17 +1,30 @@
-# hub.js
+<h1 align="center"> hub.js </h1>
 
-[![](https://img.shields.io/badge/verson-v0.1.2-brightgreen.svg)](https://www.npmjs.org/package/hub-js)
-[![](https://img.shields.io/badge/Size-%3C7kb-blue.svg)](https://www.npmjs.org/package/hub-js)
-[![](https://img.shields.io/badge/Browser-%3E%3DIE8-blue.svg)](https://www.npmjs.org/package/hub-js)
-[![](https://img.shields.io/badge/➜-介绍-FEDB31.svg)](https://zhuanlan.zhihu.com/p/30712401)
+<p align="center">
+    <a href="https://opensource.org/licenses/MIT">
+        <img alt="Licence" src="https://img.shields.io/badge/license-MIT-green.svg" />
+    </a>
+    <a href="https://www.npmjs.org/package/hub-js">
+        <img alt="NPM" src="https://img.shields.io/badge/npm-v0.2.0-brightgreen.svg" />
+    </a>
+    <a href="">
+        <img alt="Size" src="https://img.shields.io/badge/Size-%3C7kb-blue.svg" />
+    </a>
+    <a href="">
+        <img alt="Browser" src="https://img.shields.io/badge/Browser-%3E%3DIE8-blue.svg" />
+    </a>
+</p>
 
-通过简单的方式去处理来自 **自定义发布者** / **DOM 元素** / **Fetch 请求** / **WebSocket** / **socket io** 事件流。
+<p align="center">
+    通过简单的方式处理 <strong>多种事件源</strong>
+</p>
+
 
 ## 为什么使用
 
-[RxJS](https://github.com/reactivex/rxjs) 是一个很好的库去处理复杂的数据流，构成基于事件的程序。但对于一些中小型项目来说，就显得有点笨重了，并且对开发人员 需要一定的学习成本。
+满足绝大部分情况事件驱动的情况，适合用于处理各种事件流，简单、轻量 ( ungzip 仅 6kb ) 的 JS 库。
 
-相对来说, **[hub.js](https://github.com/yyued/hub.js)** 显得更加简单，更加轻量 ( ungzip 仅 6kb )。它能满足绝大部分情况事件驱动的情况，适合用于处理各种事件流。
+对于各种组件系统的框架，如：React、Vue.js 等等，非父子组件之间的通讯是一件麻烦的事情，但通过使用 hub.js 会变得轻松简单。
 
 ## 安装
 
@@ -31,34 +44,220 @@ npm i hub-js --save
 import $hub from 'hub-js';
 
 // register an event listener
-$hub.listen('test', ( data ) => {
+$hub.on( 'test', ( data ) => {
     console.log( 'test', data );
 });
 
 setInterval(( ) => {
     // send the 'test' event
-    $hub.emit('test', { code: 1 });
+    $hub.emit( 'test', { code: 1 } );
 }, 1000);
 ```
 
-## 例子
+## 更多
 
-[→ 基础用法](https://github.com/yyued/hub.js/blob/master/example/basic_use.html)
+### 移除监听
 
-[→ store 值](https://github.com/yyued/hub.js/blob/master/example/store_value.html)
+```js
+const listener = $hub.on( 'test', ( data ) => {
+    console.log( data );
+} );
 
-[→ DOM 元素原生事件](https://github.com/yyued/hub.js/blob/master/example/native_event_from_dom.html)
+$hub.emit( 'test', { code: 1 } );
 
-[→ Fetch 事件](https://github.com/yyued/hub.js/blob/master/example/fetch_event.html)
+listener.off();
+// or
+// $hub.off( 'test', listener );
 
-[→ WebSocket 事件](https://github.com/yyued/hub.js/blob/master/example/websocket_event.html)
+$hub.emit( 'test', { code: 2 } );
+```
 
-[→ socket.io 事件](https://github.com/yyued/hub.js/blob/master/example/socket_io_event.html)
+### 复数
 
-[→ 发送到链式处理](https://github.com/yyued/hub.js/blob/master/example/emit_chain.html)
+```js
+const listener = $hub.on( [ 'test', 'test-1', 'test-2' ], ( data ) => {
+    console.log( data );
+} );
 
-[→ 转换器 与 链式组合](https://github.com/yyued/hub.js/blob/master/example/converter_chaining.html)
+
+$hub.emit( [ 'test', 'test-1', 'test-2' ], { code: 1 } );
+
+listener.off();
+// or
+// $hub.off( [ 'test', 'test-1' ], listener );
+
+$hub.emit( [ 'test', 'test-1', 'test-2' ], { code: 2 } );
+```
+
+注意，监听者会接收到每次适配到的事件源发生。例如上述例子，则会产生三条日志。
+
+
+### Store
+
+```js
+// 设置 store 值
+$hub.store.code = 1;
+
+// 监听 store 里具体 某个数值
+// 若 这个数值已存在 “当前值”，则监听成功后，立即返回 “当前值”，就像 Rx.BehaviorSubject
+$hub.on( '@store/code', ( data ) => {
+    console.log( 'store code', data );
+} )
+
+setInterval(() => {
+    ++$hub.store.code;
+    // or
+    // $hub.emit( '@store/code', 1 );
+}, 1000);
+```
+
+### DOM Element
+
+```js
+const dispatcher = $hub.DOM( 'button' )
+                        .from( 'click' ).emit( 'dom-click-event' )
+                        .from( 'mousedown' ).emit( 'dom-mousedown-event' );
+
+$hub.listen( 'dom-click-event', ( e ) => {
+    console.log( 'button click', e );
+} )
+
+$hub.listen( 'dom-mousedown-event', ( e ) => {
+    console.log( 'button mousedown', e );
+})
+
+setTimeout( function( ) {
+    dispatcher.off();
+}, 10000 );
+```
+
+### Fetch
+
+```js
+const dispatcher = $hub.Fetch( 'https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4' )
+                        .emit( 'fetch-event1' )
+                        .emit( 'fetch-event2' );
+
+setTimeout( ( ) => {
+    dispatcher.reload( );
+}, 2000 );
+
+$hub.listen( 'fetch-event1', ( result ) => {
+    console.log( 'fetch1', result );
+} )
+
+$hub.listen( 'fetch-event2', ( result ) => {
+    console.log( 'fetch2', result );
+})
+```
+
+### WebSocket
+
+```js
+const dispatcher = $hub.WS( 'ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc/1000' )
+                        .emit( 'ws-event1' )
+                        .emit( 'ws-event2' );
+
+$hub.listen( 'ws-event1', ( result ) => {
+    console.log( 'ws1: ', result );
+} )
+$hub.listen( 'ws-event2', ( result ) => {
+    console.log( 'ws2: ', result );
+} )
+
+setTimeout( function ( ) {
+    dispatcher.off();
+}, 3000 );
+```
+
+### socket.io
+
+```html
+<script src="./lib/socket.io.min.js"></script>
+
+<script>
+    const dispatcher = $hub.IO( 'http://legox.org:5353' )
+                            .from( 'mock' )
+                            .emit( 'io-event' );
+
+    dispatcher.socket.emit( 'mock', {
+        key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',
+        time: 1000,
+    } )
+
+    $hub.listen('io-event', ( result ) => {
+        console.log( 'io:', result );
+    } )
+
+    setTimeout( function ( ) {
+        dispatcher.off();
+    }, 3000 );
+</script>
+```
+
+### 通道链式
+
+```js
+$hub.chain( 'test' )
+        .pipe(
+            ( d ) => new Promise( ( resolve ) => setTimeout( () => resolve( d + 1 ), 2000 ) ),
+            ( d ) => d + 2,
+            ( d ) => d + 3,
+        )
+        .pipe(
+            ( d ) => d + 3,
+        );
+
+$hub.listen( '@chain/test', ( d ) => {
+    console.log( d );
+} );
+
+$hub.emit( '@chain/test', 1 ); // 10
+```
+
+### 链式 & 转换器
+
+```js
+// 注册转换器
+$hub.converter.DOMEventFormat1 = function ( e ) {
+    return [ e.type, e.target ];
+}
+$hub.converter.DOMEventFormat2 = function ( e ) {
+    return [ e.target, e.type ];
+}
+
+// 可以通过自由组合 链式 衔接的顺序，进行对流的控制，从而达到你想要的效果
+const dispatcher = $hub.DOM( 'button' )
+                        .from( 'click' ).convert( 'DOMEventFormat1').emit( 'dom-click-event' )
+                        .from( 'mousedown' ).convert( 'DOMEventFormat1' ).emit( 'dom-mousedown-event' );
+// 或者
+// $hub.DOM( 'button' ).from( 'click' ).convert( 'DOMEventFormat1' ).emit( 'dom-click-event1' ).emit( 'dom-click-event2' )
+// $hub.DOM( 'button' ).from( 'click' ).convert( 'DOMEventFormat1' ).convert( 'DOMEventFormat2' ).emit( 'dom-click-event1' )
+
+// 其他
+// $hub.Fetch( 'https://xxx' ).emit( 'e1' ).convert( 'converter' ).emit( 'e2' );
+// $hub.WS( 'ws://xxx' ).emit( 'e1' ).convert( 'converter' ).emit( 'e2' );
+// $hub.IO( 'https://xxx' ).from( 'x1' ).convert( 'converter' ).emit( 'e1' ).from( 'x2' ).emit( 'e1' );
+
+$hub.listen( 'dom-click-event', ( e ) => {
+    console.log( 'button click', e );
+} )
+
+$hub.listen( 'dom-mousedown-event', ( e ) => {
+    console.log( 'button mousedown', e );
+} )
+
+setTimeout( function( ) {
+    dispatcher.off();
+}, 10000);
+```
+
+## 与 0.1.x 差异
+
+* ~~$hub.listen~~ → $hub.on
+* ~~$hub.removeListen~~ → $hub.off
+* ~~listener.remove~~ → listener.off
 
 ## 许可
 
-MIT
+[MIT](./LICENSE)

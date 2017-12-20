@@ -1,5 +1,5 @@
 {
-    "version": "1.0.46",
+    "version": "1.0.58",
     "type": "clean",
     "assets": "",
     "es6": true,
@@ -33,5 +33,6 @@
     "img.folder": "",
     "html.folder": "",
     "js.folder": "",
-    "export.folder": ""
+    "export.folder": "",
+    "build.onlyRunShell": true
 }

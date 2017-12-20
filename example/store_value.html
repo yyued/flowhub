@@ -16,7 +16,7 @@
 
         // 监听 store 里具体 某个数值
         // 若 这个数值已存在 “当前值”，则监听成功后，立即返回 “当前值”，就像 Rx.BehaviorSubject
-        $hub.listen('@store/code', ( code ) => {
+        $hub.on('@store/code', ( code ) => {
             console.log( 'store code', code );
         })
 

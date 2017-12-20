@@ -16,14 +16,14 @@
         }
 
         // 监听 test 事件流
-        const listener = $hub.listen('test', handler);
+        const listener = $hub.on('test', handler);
 
         setInterval(() => {
             // 触发 test 事件流
             $hub.emit('test', { code: 1 });
 
             // 解除监听
-            listener.remove();
+            listener.off();
         }, 1000);
     </script>
 

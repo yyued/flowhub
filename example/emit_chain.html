@@ -19,7 +19,7 @@
             ( d ) => d + 3,
         );
 
-        $hub.listen('@chain/test', ( d ) => {
+        $hub.on('@chain/test', ( d ) => {
             console.log( d );
         });
 

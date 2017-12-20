@@ -1,18 +1,30 @@
-# hub.js
+<h1 align="center"> hub.js </h1>
 
-[![](https://img.shields.io/badge/npm-v0.1.2-green.svg)](https://www.npmjs.org/package/hub-js)
-[![](https://img.shields.io/badge/size-%3C7kb-blue.svg)](https://www.npmjs.org/package/hub-js)
-[![](https://img.shields.io/badge/Browser-%3E%3DIE8-blue.svg)](https://www.npmjs.org/package/hub-js)
+<p align="center">
+    <a href="https://opensource.org/licenses/MIT">
+        <img alt="Licence" src="https://img.shields.io/badge/license-MIT-green.svg" />
+    </a>
+    <a href="https://www.npmjs.org/package/hub-js">
+        <img alt="NPM" src="https://img.shields.io/badge/npm-v0.2.0-brightgreen.svg" />
+    </a>
+    <a href="">
+        <img alt="Size" src="https://img.shields.io/badge/Size-%3C7kb-blue.svg" />
+    </a>
+    <a href="">
+        <img alt="Browser" src="https://img.shields.io/badge/Browser-%3E%3DIE8-blue.svg" />
+    </a>
+</p>
 
-Through a simple way to deal with the event streams from **customized dispatcher** / **DOM element** / **Fetch request** / **WebSocket** / **socket io**.
-
-[简体中文](./README.zh-CN.md)
+<p align="center">
+    Through a simple way to deal with many kinds of <strong>event stream</strong>
+</p>
 
 ## Why
+hub.js is more simpler and lightweight ( ungzip only 6kb ). It satisfies most of the situation event-driven situation, suitable for dealing with a variety of  event streams.
 
-[RxJS](https://github.com/reactivex/rxjs) is a good library to handle complex data streams that make up the event-based programs. But for some small and medium-sized projects, it is a bit cumbersome, and it requires a certain amount of learning costs for developers.
+For frameworks of component systems, such as React, Vue.js, etc., communication between non parent and child components is a bothering thing, but it can be made easy by using hub.js.
 
-In contrast, **[hub.js](https://github.com/yyued/hub.js)** is more simpler and lightweight ( ungzip only 6kb ). It satisfies most of the situation event-driven situation, suitable for dealing with a variety of  event streams.
+[简体中文](./README.zh-CN.md)
 
 ## Installing
 
@@ -32,34 +44,220 @@ or
 import $hub from 'hub-js';
 
 // register an event listener
-$hub.listen('test', ( data ) => {
+$hub.on( 'test', ( data ) => {
     console.log( 'test', data );
 });
 
 setInterval(( ) => {
     // send the 'test' event
-    $hub.emit('test', { code: 1 });
+    $hub.emit( 'test', { code: 1 } );
 }, 1000);
 ```
 
-## Example
+## More
 
-[→ basic use](https://github.com/yyued/hub.js/blob/master/example/basic_use.html)
+### Remove listener
 
-[→ store value](https://github.com/yyued/hub.js/blob/master/example/store_value.html)
+```js
+const listener = $hub.on( 'test', ( data ) => {
+    console.log( data );
+} );
 
-[→ native event from DOM](https://github.com/yyued/hub.js/blob/master/example/native_event_from_dom.html)
+$hub.emit( 'test', { code: 1 } );
 
-[→ Fetch event](https://github.com/yyued/hub.js/blob/master/example/fetch_event.html)
+listener.off();
+// or
+// $hub.off( 'test', listener );
 
-[→ WebSocket event](https://github.com/yyued/hub.js/blob/master/example/websocket_event.html)
+$hub.emit( 'test', { code: 2 } );
+```
 
-[→ socket.io event](https://github.com/yyued/hub.js/blob/master/example/socket_io_event.html)
+### Multiple
 
-[→ emit chain](https://github.com/yyued/hub.js/blob/master/example/emit_chain.html)
+```js
+const listener = $hub.on( [ 'test', 'test-1', 'test-2' ], ( data ) => {
+    console.log( data );
+} );
 
-[→ the converter & the chainning](https://github.com/yyued/hub.js/blob/master/example/converter_chaining.html)
+
+$hub.emit( [ 'test', 'test-1', 'test-2' ], { code: 1 } );
+
+listener.off();
+// or
+// $hub.off( [ 'test', 'test-1' ], listener );
+
+$hub.emit( [ 'test', 'test-1', 'test-2' ], { code: 2 } );
+```
+
+Note that, the listener receives each time the adapted event source occurs. For example, the above example will produce three logs.
+
+
+### Store
+
+```js
+// set store value
+$hub.store.code = 1;
+
+// listen store  value
+// if this value already has a "current value," the listener immediately returns the "current value," just as Rx.BehaviorSubject
+$hub.on( '@store/code', ( data ) => {
+    console.log( 'store code', data );
+} )
+
+setInterval(() => {
+    ++$hub.store.code;
+    // or
+    // $hub.emit( '@store/code', 1 );
+}, 1000);
+```
+
+### DOM Element
+
+```js
+const dispatcher = $hub.DOM( 'button' )
+                        .from( 'click' ).emit( 'dom-click-event' )
+                        .from( 'mousedown' ).emit( 'dom-mousedown-event' );
+
+$hub.on( 'dom-click-event', ( e ) => {
+    console.log( 'button click', e );
+} )
+
+$hub.on( 'dom-mousedown-event', ( e ) => {
+    console.log( 'button mousedown', e );
+})
+
+setTimeout( function( ) {
+    dispatcher.off();
+}, 10000 );
+```
+
+### Fetch
+
+```js
+const dispatcher = $hub.Fetch( 'https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4' )
+                        .emit( 'fetch-event1' )
+                        .emit( 'fetch-event2' );
+
+setTimeout( ( ) => {
+    dispatcher.reload( );
+}, 2000 );
+
+$hub.on( 'fetch-event1', ( result ) => {
+    console.log( 'fetch1', result );
+} )
+
+$hub.on( 'fetch-event2', ( result ) => {
+    console.log( 'fetch2', result );
+})
+```
+
+### WebSocket
+
+```js
+const dispatcher = $hub.WS( 'ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc/1000' )
+                        .emit( 'ws-event1' )
+                        .emit( 'ws-event2' );
+
+$hub.on( 'ws-event1', ( result ) => {
+    console.log( 'ws1: ', result );
+} )
+$hub.on( 'ws-event2', ( result ) => {
+    console.log( 'ws2: ', result );
+} )
+
+setTimeout( function ( ) {
+    dispatcher.off();
+}, 3000 );
+```
+
+### socket.io
+
+```html
+<script src="./lib/socket.io.min.js"></script>
+
+<script>
+    const dispatcher = $hub.IO( 'http://legox.org:5353' )
+                            .from( 'mock' )
+                            .emit( 'io-event' );
+
+    dispatcher.socket.emit( 'mock', {
+        key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',
+        time: 1000,
+    } )
+
+    $hub.on('io-event', ( result ) => {
+        console.log( 'io:', result );
+    } )
+
+    setTimeout( function ( ) {
+        dispatcher.off();
+    }, 3000 );
+</script>
+```
+
+### Chain Pipe
+
+```js
+$hub.chain( 'test' )
+        .pipe(
+            ( d ) => new Promise( ( resolve ) => setTimeout( () => resolve( d + 1 ), 2000 ) ),
+            ( d ) => d + 2,
+            ( d ) => d + 3,
+        )
+        .pipe(
+            ( d ) => d + 3,
+        );
+
+$hub.on( '@chain/test', ( d ) => {
+    console.log( d );
+} );
+
+$hub.emit( '@chain/test', 1 ); // 10
+```
+
+### Chaining & Converter
+
+```js
+// register converter
+$hub.converter.DOMEventFormat1 = function ( e ) {
+    return [ e.type, e.target ];
+}
+$hub.converter.DOMEventFormat2 = function ( e ) {
+    return [ e.target, e.type ];
+}
+
+// you can control the convection by free combination of chaining, so as to get the effect you want.
+const dispatcher = $hub.DOM( 'button' )
+                        .from( 'click' ).convert( 'DOMEventFormat1').emit( 'dom-click-event' )
+                        .from( 'mousedown' ).convert( 'DOMEventFormat1' ).emit( 'dom-mousedown-event' );
+// or
+// $hub.DOM( 'button' ).from( 'click' ).convert( 'DOMEventFormat1' ).emit( 'dom-click-event1' ).emit( 'dom-click-event2' )
+// $hub.DOM( 'button' ).from( 'click' ).convert( 'DOMEventFormat1' ).convert( 'DOMEventFormat2' ).emit( 'dom-click-event1' )
+
+// other
+// $hub.Fetch( 'https://xxx' ).emit( 'e1' ).convert( 'converter' ).emit( 'e2' );
+// $hub.WS( 'ws://xxx' ).emit( 'e1' ).convert( 'converter' ).emit( 'e2' );
+// $hub.IO( 'https://xxx' ).from( 'x1' ).convert( 'converter' ).emit( 'e1' ).from( 'x2' ).emit( 'e1' );
+
+$hub.on( 'dom-click-event', ( e ) => {
+    console.log( 'button click', e );
+} )
+
+$hub.on( 'dom-mousedown-event', ( e ) => {
+    console.log( 'button mousedown', e );
+} )
+
+setTimeout( function( ) {
+    dispatcher.off();
+}, 10000);
+```
+
+## Diff 0.1.x
+
+* ~~$hub.listen~~ → $hub.on
+* ~~$hub.removeListen~~ → $hub.off
+* ~~listener.remove~~ → listener.off
 
 ## License
 
-MIT
+[MIT](./LICENSE)

@@ -6,14 +6,14 @@
 import emit from './core/emit';
 
 /*
- * listen event
+ * on event
  */
-import listen from './core/listen';
+import on from './core/on';
 
 /*
  * removeListen event
  */
-import removeListen from './core/remove_listen';
+import off from './core/off';
 
 /*
  * store proxy
@@ -44,6 +44,11 @@ import WS from './core/ws';
  * chain event
  */
 import chain from './core/chain';
+
+/*
+ * once event
+ */
+import once from './core/once';
 
 let _observer = { };
 
@@ -92,12 +97,12 @@ module.exports = {
      * @param {Function} handler
      * @return {object} listener
      */
-    listen,
+    on,
 
     /*
      * remove the listener from the observer
      */
-    removeListen,
+    off,
 
     /*
      * build the store proxyer
@@ -147,4 +152,5 @@ module.exports = {
 
     converter: _converter,
 
+    once,
 }

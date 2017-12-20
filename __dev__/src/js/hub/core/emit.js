@@ -31,22 +31,31 @@ const toObserver = ( observer, key, value ) => {
 export default function ( key, value ) {
     const { observer, data, chainer } = this;
 
-    if ( key.indexOf( '@store/' ) === 0 ) {
-        const _key = key.split( '@store/' )[ 1 ];
-        if ( typeof data[ _key ] !== 'undefined' ) {
-            data[ _key ] = value;
+    const keyToObserver = ( _key ) => {
+        if ( key.indexOf( '@store/' ) === 0 ) {
+            const keySplit = key.split( '@store/' )[ 1 ];
+            if ( typeof data[ keySplit ] !== 'undefined' ) {
+                data[ keySplit ] = value;
+            }
         }
+
+        if ( key.indexOf( '@chain/' ) === 0 ) {
+            const keySplit = key.split( '@chain/' )[ 1 ];
+            if ( typeof chainer[ keySplit ] !== 'undefined' ) {
+                iterineChainer( chainer[ keySplit ], value, ( data ) => {
+                    toObserver( observer, key, data );
+                });
+                return void 0;
+            }
+        }
+
+        toObserver( observer, _key, value );
     }
 
-    if ( key.indexOf( '@chain/' ) === 0 ) {
-        const _key = key.split( '@chain/' )[ 1 ];
-        if ( typeof chainer[ _key ] !== 'undefined' ) {
-            iterineChainer( chainer[ _key ], value, ( data ) => {
-                toObserver( observer, key, data );
-            });
-            return void 0;
-        }
+    if ( key instanceof Array ) {
+        key.forEach( _key => keyToObserver( _key ) );
     }
-
-    toObserver( observer, key, value );
+    else {
+        keyToObserver( key );
+    }
 }

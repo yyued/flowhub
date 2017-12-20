@@ -17,16 +17,16 @@
         const dispatcher = $hub.DOM('button').from('click').emit('dom-click-event').from('mousedown').emit('dom-mousedown-event');
 
         // 监听 DOM 事件流
-        $hub.listen('dom-click-event', ( e ) => {
+        $hub.on('dom-click-event', ( e ) => {
             console.log( 'button click', e );
         })
-        $hub.listen('dom-mousedown-event', ( e ) => {
+        $hub.on('dom-mousedown-event', ( e ) => {
             console.log( 'button mousedown', e );
         })
 
         setTimeout(function() {
             // 移除 DOM 监听事件，停止 发送事件流
-            dispatcher.remove();
+            dispatcher.off();
         }, 10000);
     </script>
 

@@ -110,7 +110,7 @@ export default function ( dom ) {
             }
 
             // remove the native event, and stop event flow
-            dispatcher.remove = ( ) => {
+            dispatcher.off = ( ) => {
                 queue.forEach(( item, index ) => {
                 	if ( item.type === '__from__' ) {
                         DOM.removeEventListener( item.func, exec );

@@ -90,7 +90,7 @@ export default function ( url ) {
             return dispatcher;
         }
 
-        dispatcher.remove = () => {
+        dispatcher.off = () => {
             _socket.removeEventListener('message', _eventListener);
         }
 

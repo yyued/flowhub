@@ -15,16 +15,16 @@
         const dispatcher = $hub.WS('ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc/1000').emit('ws-event1').emit('ws-event2');
 
         // 注册监听
-        $hub.listen('ws-event1', ( result ) => {
+        $hub.on('ws-event1', ( result ) => {
             console.log( 'ws1: ', result );
         })
-        $hub.listen('ws-event2', ( result ) => {
+        $hub.on('ws-event2', ( result ) => {
             console.log( 'ws2: ', result );
         })
 
         setTimeout(function( ) {
             // 停止监听 WS 流推送
-            dispatcher.remove();
+            dispatcher.off();
         }, 3000);
     </script>
 

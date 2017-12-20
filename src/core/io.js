@@ -111,7 +111,7 @@ export default function ( url ) {
             return dispatcher;
         }
 
-        dispatcher.remove = () => {
+        dispatcher.off = () => {
             queue.forEach(( item, index ) => {
             	if ( item.type === '__from__' ) {
                     _socket.off( item.func, item._eventListener );
