@@ -8,10 +8,10 @@
         <img alt="NPM" src="https://img.shields.io/badge/npm-v0.2.0-brightgreen.svg" />
     </a>
     <a href="">
-        <img alt="Size" src="https://img.shields.io/badge/Size-%3C7kb-blue.svg" />
+        <img alt="Size" src="https://img.shields.io/badge/size-%3C7kb-blue.svg" />
     </a>
     <a href="">
-        <img alt="Browser" src="https://img.shields.io/badge/Browser-%3E%3DIE8-blue.svg" />
+        <img alt="Browser" src="https://img.shields.io/badge/browser-%3E%3DIE8-blue.svg" />
     </a>
 </p>
 
@@ -46,12 +46,12 @@ import $hub from 'hub-js';
 // register an event listener
 $hub.on( 'test', ( data ) => {
     console.log( 'test', data );
-});
+} );
 
-setInterval(( ) => {
+setInterval( ( ) => {
     // send the 'test' event
     $hub.emit( 'test', { code: 1 } );
-}, 1000);
+}, 1000 );
 ```
 
 ## 更多
@@ -104,29 +104,29 @@ $hub.on( '@store/code', ( data ) => {
     console.log( 'store code', data );
 } )
 
-setInterval(() => {
+setInterval( () => {
     ++$hub.store.code;
     // or
     // $hub.emit( '@store/code', 1 );
-}, 1000);
+}, 1000 );
 ```
 
-### DOM Element
+### DOM 元素
 
 ```js
 const dispatcher = $hub.DOM( 'button' )
                         .from( 'click' ).emit( 'dom-click-event' )
                         .from( 'mousedown' ).emit( 'dom-mousedown-event' );
 
-$hub.listen( 'dom-click-event', ( e ) => {
+$hub.on( 'dom-click-event', ( e ) => {
     console.log( 'button click', e );
 } )
 
-$hub.listen( 'dom-mousedown-event', ( e ) => {
+$hub.on( 'dom-mousedown-event', ( e ) => {
     console.log( 'button mousedown', e );
-})
+} )
 
-setTimeout( function( ) {
+setTimeout( function ( ) {
     dispatcher.off();
 }, 10000 );
 ```
@@ -142,13 +142,13 @@ setTimeout( ( ) => {
     dispatcher.reload( );
 }, 2000 );
 
-$hub.listen( 'fetch-event1', ( result ) => {
+$hub.on( 'fetch-event1', ( result ) => {
     console.log( 'fetch1', result );
 } )
 
-$hub.listen( 'fetch-event2', ( result ) => {
+$hub.on( 'fetch-event2', ( result ) => {
     console.log( 'fetch2', result );
-})
+} )
 ```
 
 ### WebSocket
@@ -158,10 +158,10 @@ const dispatcher = $hub.WS( 'ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558
                         .emit( 'ws-event1' )
                         .emit( 'ws-event2' );
 
-$hub.listen( 'ws-event1', ( result ) => {
+$hub.on( 'ws-event1', ( result ) => {
     console.log( 'ws1: ', result );
 } )
-$hub.listen( 'ws-event2', ( result ) => {
+$hub.on( 'ws-event2', ( result ) => {
     console.log( 'ws2: ', result );
 } )
 
@@ -185,7 +185,7 @@ setTimeout( function ( ) {
         time: 1000,
     } )
 
-    $hub.listen('io-event', ( result ) => {
+    $hub.on( 'io-event', ( result ) => {
         console.log( 'io:', result );
     } )
 
@@ -208,7 +208,7 @@ $hub.chain( 'test' )
             ( d ) => d + 3,
         );
 
-$hub.listen( '@chain/test', ( d ) => {
+$hub.on( '@chain/test', ( d ) => {
     console.log( d );
 } );
 
@@ -239,17 +239,17 @@ const dispatcher = $hub.DOM( 'button' )
 // $hub.WS( 'ws://xxx' ).emit( 'e1' ).convert( 'converter' ).emit( 'e2' );
 // $hub.IO( 'https://xxx' ).from( 'x1' ).convert( 'converter' ).emit( 'e1' ).from( 'x2' ).emit( 'e1' );
 
-$hub.listen( 'dom-click-event', ( e ) => {
+$hub.on( 'dom-click-event', ( e ) => {
     console.log( 'button click', e );
 } )
 
-$hub.listen( 'dom-mousedown-event', ( e ) => {
+$hub.on( 'dom-mousedown-event', ( e ) => {
     console.log( 'button mousedown', e );
 } )
 
-setTimeout( function( ) {
+setTimeout( function ( ) {
     dispatcher.off();
-}, 10000);
+}, 10000 );
 ```
 
 ## 与 0.1.x 差异

@@ -8,10 +8,10 @@
         <img alt="NPM" src="https://img.shields.io/badge/npm-v0.2.0-brightgreen.svg" />
     </a>
     <a href="">
-        <img alt="Size" src="https://img.shields.io/badge/Size-%3C7kb-blue.svg" />
+        <img alt="Size" src="https://img.shields.io/badge/size-%3C7kb-blue.svg" />
     </a>
     <a href="">
-        <img alt="Browser" src="https://img.shields.io/badge/Browser-%3E%3DIE8-blue.svg" />
+        <img alt="Browser" src="https://img.shields.io/badge/browser-%3E%3DIE8-blue.svg" />
     </a>
 </p>
 
@@ -46,12 +46,12 @@ import $hub from 'hub-js';
 // register an event listener
 $hub.on( 'test', ( data ) => {
     console.log( 'test', data );
-});
+} );
 
-setInterval(( ) => {
+setInterval( ( ) => {
     // send the 'test' event
     $hub.emit( 'test', { code: 1 } );
-}, 1000);
+}, 1000 );
 ```
 
 ## More
@@ -104,11 +104,11 @@ $hub.on( '@store/code', ( data ) => {
     console.log( 'store code', data );
 } )
 
-setInterval(() => {
+setInterval( () => {
     ++$hub.store.code;
     // or
     // $hub.emit( '@store/code', 1 );
-}, 1000);
+}, 1000 );
 ```
 
 ### DOM Element
@@ -124,9 +124,9 @@ $hub.on( 'dom-click-event', ( e ) => {
 
 $hub.on( 'dom-mousedown-event', ( e ) => {
     console.log( 'button mousedown', e );
-})
+} )
 
-setTimeout( function( ) {
+setTimeout( function ( ) {
     dispatcher.off();
 }, 10000 );
 ```
@@ -148,7 +148,7 @@ $hub.on( 'fetch-event1', ( result ) => {
 
 $hub.on( 'fetch-event2', ( result ) => {
     console.log( 'fetch2', result );
-})
+} )
 ```
 
 ### WebSocket
@@ -247,9 +247,9 @@ $hub.on( 'dom-mousedown-event', ( e ) => {
     console.log( 'button mousedown', e );
 } )
 
-setTimeout( function( ) {
+setTimeout( function ( ) {
     dispatcher.off();
-}, 10000);
+}, 10000 );
 ```
 
 ## Diff 0.1.x
