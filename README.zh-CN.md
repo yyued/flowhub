@@ -39,7 +39,7 @@ npm i hub-js --save
 ```js
 import $hub from 'hub-js';
 
-// 注意监听者
+// 注册监听者
 $hub.on( 'test', ( data ) => {
     console.log( 'test', data );
 } );
@@ -64,6 +64,18 @@ $hub.emit( 'test', { code: 1 } );
 listener.off();
 // 或者
 // $hub.off( 'test', listener );
+
+$hub.emit( 'test', { code: 2 } );
+```
+
+### 单次
+
+```js
+const listener = $hub.once( 'test', ( data ) => {
+    console.log( data );
+} );
+
+$hub.emit( 'test', { code: 1 } );
 
 $hub.emit( 'test', { code: 2 } );
 ```

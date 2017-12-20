@@ -69,6 +69,18 @@ listener.off();
 $hub.emit( 'test', { code: 2 } );
 ```
 
+### once
+
+```js
+const listener = $hub.once( 'test', ( data ) => {
+    console.log( data );
+} );
+
+$hub.emit( 'test', { code: 1 } );
+
+$hub.emit( 'test', { code: 2 } );
+```
+
 ### Multiple
 
 ```js
