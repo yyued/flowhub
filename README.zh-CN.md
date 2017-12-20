@@ -15,10 +15,6 @@
     </a>
 </p>
 
-<p align="center">
-    通过简单的方式处理 <strong>多种事件源</strong>
-</p>
-
 
 ## 为什么使用
 
@@ -43,13 +39,13 @@ npm i hub-js --save
 ```js
 import $hub from 'hub-js';
 
-// register an event listener
+// 注意监听者
 $hub.on( 'test', ( data ) => {
     console.log( 'test', data );
 } );
 
 setInterval( ( ) => {
-    // send the 'test' event
+    // 发送 'test' 事件
     $hub.emit( 'test', { code: 1 } );
 }, 1000 );
 ```
@@ -66,7 +62,7 @@ const listener = $hub.on( 'test', ( data ) => {
 $hub.emit( 'test', { code: 1 } );
 
 listener.off();
-// or
+// 或者
 // $hub.off( 'test', listener );
 
 $hub.emit( 'test', { code: 2 } );
@@ -83,7 +79,7 @@ const listener = $hub.on( [ 'test', 'test-1', 'test-2' ], ( data ) => {
 $hub.emit( [ 'test', 'test-1', 'test-2' ], { code: 1 } );
 
 listener.off();
-// or
+// 或者
 // $hub.off( [ 'test', 'test-1' ], listener );
 
 $hub.emit( [ 'test', 'test-1', 'test-2' ], { code: 2 } );
@@ -106,7 +102,7 @@ $hub.on( '@store/code', ( data ) => {
 
 setInterval( () => {
     ++$hub.store.code;
-    // or
+    // 或者
     // $hub.emit( '@store/code', 1 );
 }, 1000 );
 ```
@@ -252,7 +248,7 @@ setTimeout( function ( ) {
 }, 10000 );
 ```
 
-## 与 0.1.x 差异
+## 0.1.x 差异
 
 * ~~$hub.listen~~ → $hub.on
 * ~~$hub.removeListen~~ → $hub.off

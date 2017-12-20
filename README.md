@@ -15,11 +15,8 @@
     </a>
 </p>
 
-<p align="center">
-    Through a simple way to deal with many kinds of <strong>event stream</strong>
-</p>
-
 ## Why
+
 hub.js is more simpler and lightweight ( ungzip only 6kb ). It satisfies most of the situation event-driven situation, suitable for dealing with a variety of  event streams.
 
 For frameworks of component systems, such as React, Vue.js, etc., communication between non parent and child components is a bothering thing, but it can be made easy by using hub.js.
