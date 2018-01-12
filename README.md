@@ -8,16 +8,13 @@
         <img alt="NPM" src="https://img.shields.io/badge/npm-v0.2.0-brightgreen.svg" />
     </a>
     <a href="">
-        <img alt="Size" src="https://img.shields.io/badge/size-%3C7kb-blue.svg" />
-    </a>
-    <a href="">
-        <img alt="Browser" src="https://img.shields.io/badge/browser-%3E%3DIE8-blue.svg" />
+        <img alt="Size" src="https://img.shields.io/badge/size-7kb-blue.svg" />
     </a>
 </p>
 
 ## Why
 
-hub.js is more simpler and lightweight ( ungzip only 6kb ). It satisfies most of the situation event-driven situation, suitable for dealing with a variety of  event streams.
+hub.js is more simpler and lightweight ( gzip 2kb ). It satisfies most of the situation event-driven situation, suitable for dealing with a variety of  event streams.
 
 For frameworks of component systems, such as React, Vue.js, etc., communication between non parent and child components is a bothering thing, but it can be made easy by using hub.js.
 

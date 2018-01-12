@@ -8,17 +8,14 @@
         <img alt="NPM" src="https://img.shields.io/badge/npm-v0.2.0-brightgreen.svg" />
     </a>
     <a href="">
-        <img alt="Size" src="https://img.shields.io/badge/size-%3C7kb-blue.svg" />
-    </a>
-    <a href="">
-        <img alt="Browser" src="https://img.shields.io/badge/browser-%3E%3DIE8-blue.svg" />
+        <img alt="Size" src="https://img.shields.io/badge/size-7kb-blue.svg" />
     </a>
 </p>
 
 
 ## 为什么使用
 
-满足绝大部分情况事件驱动的情况，适合用于处理各种事件流，简单、轻量 ( ungzip 仅 6kb ) 的 JS 库。
+满足绝大部分情况事件驱动的情况，适合用于处理各种事件流，简单、轻量 ( gzip 2kb ) 的 JS 库。
 
 对于各种组件系统的框架，如：React、Vue.js 等等，非父子组件之间的通讯是一件麻烦的事情，但通过使用 hub.js 会变得轻松简单。
 
