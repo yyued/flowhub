@@ -12,14 +12,8 @@ const packageJSON = require('../package.json');
 const distFileName = 'hub.min.js';
 
 const banner = `
-hub.js
-
-@file: [file]
-@author: ${ packageJSON.author }
-@version: ${ packageJSON.version }
-@update: ${ ( new Date() ).format('YYYY-MM-DD hh:mm:ss') }
-
-(c) 2017 YY UEDC
+hub.js v${ packageJSON.version }
+(c) 2018 YY UEDC
 Released under the MIT License.
 `;
 

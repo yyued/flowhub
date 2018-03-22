@@ -1,6 +1,6 @@
 {
   "name": "hub-js",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Through a simple way to deal with the event streams",
   "main": "./dist/hub.min.js",
   "scripts": {

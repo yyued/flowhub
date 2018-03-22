@@ -5,18 +5,21 @@ import $hub from './hub';
 //     console.log( 'handler', data );
 // }
 
-// // 监听 test 事件流
+// 监听 test 事件流
 // const listener = $hub.on( [ 'test' ] , handler );
 
-// $hub.once('test', ( data ) => {
+// $hub.once( 'test', ( data ) => {
+//     // alert( JSON.stringify( data ) );
 //     console.info( 'once >>>>>>>>', data );
-// });
+// } );
 
-// // 设置 store 值
+// $hub.emit( [ 'test' ], { code: 1 } );
+
+// 设置 store 值
 // $hub.store.code = 1;
 
-// // 监听 store 里具体 某个数值
-// // 若 这个数值已存在 “当前值”，则监听成功后，立即返回 “当前值”，就像 Rx.BehaviorSubject
+// 监听 store 里具体 某个数值
+// 若 这个数值已存在 “当前值”，则监听成功后，立即返回 “当前值”，就像 Rx.BehaviorSubject
 // $hub.on('@store/code', ( code ) => {
 //     console.log( 'store code', code );
 // })
@@ -139,28 +142,28 @@ import $hub from './hub';
 
 
 // 格式处理器
-$hub.converter.IOEventFormat = function ( data ) {
-    return new Promise(( resolve, reject ) => {
-        setTimeout(( ) => {
-            resolve( data.code );
-        }, 1000);
-    });
-}
+// $hub.converter.IOEventFormat = function ( data ) {
+//     return new Promise(( resolve, reject ) => {
+//         setTimeout(( ) => {
+//             resolve( data.code );
+//         }, 1000);
+//     });
+// }
 
-const d4 = $hub.IO('http://legox.org:5353').from('mock').convert('IOEventFormat').emit('io-event');
+// const d4 = $hub.IO('http://legox.org:5353').from('mock').convert('IOEventFormat').emit('io-event');
 
-d4.socket.emit('mock', {
-    key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',
-    time: 1000,
-})
+// d4.socket.emit('mock', {
+//     key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',
+//     time: 1000,
+// })
 
-$hub.on('io-event', ( result ) => {
-    console.log( 'io: ', result );
-})
+// $hub.on('io-event', ( result ) => {
+//     console.log( 'io: ', result );
+// })
 
-setTimeout(function() {
-    d4.off();
-}, 3000);
+// setTimeout(function() {
+//     d4.off();
+// }, 3000);
 
 // ================ Chain ================
 

@@ -1,3 +1,5 @@
+_config.yml
+**/assets
 **/__dev__
 **/__test__
 **/example
