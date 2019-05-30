@@ -4,34 +4,30 @@
  * @param {object} _observer
  * @return {Proxy} store
  */
+export default function (_store, _observer) {
+  try {
+    return new Proxy({ }, {
+      get (target, key, receiver) {
+        return _store[ key ]
+      },
 
-'use strict';
+      // TODO: support the complicated data type
+      set (target, key, value, receiver) {
+        // can not the same value
+        if (!(_store[ key ] && _store[ key ] == value)) {
+          _store[ key ] = value
 
-export default function ( _store, _observer ) {
-    try {
-        return new Proxy( { }, {
-            get: function ( target, key, receiver ) {
-                return _store[ key ];
-            },
+          const observerStoreKey = `@store/${key}`
 
-            // TODO: support the complicated data type
-            set: function ( target, key, value, receiver ) {
-                // can not the same value
-                if ( !( _store[ key ] && _store[ key ] == value ) ) {
-                    _store[ key ] = value;
-
-                    const observerStoreKey = `@store/${ key }`;
-
-                    if ( typeof _observer[ observerStoreKey ] !== 'undefined' ) {
-                        _observer[ observerStoreKey ].forEach(( handler, index ) => {
-                            handler( value );
-                        });
-                    }
-                }
-            }
-        } );
-    }
-    catch ( e ) {
-        console.error( '[hub.js] Browser not support "Proxy"' );
-    }
+          if (typeof _observer[ observerStoreKey ] !== 'undefined') {
+            _observer[ observerStoreKey ].forEach((handler, index) => {
+              handler(value)
+            })
+          }
+        }
+      }
+    })
+  } catch (e) {
+    console.error('[hub.js] Browser not support "Proxy"')
+  }
 }
