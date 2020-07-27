@@ -12,7 +12,6 @@
   </a>
 </p>
 
-
 ## 为什么使用
 
 满足绝大部分情况事件驱动的情况，适合用于处理各种事件流，简单、轻量 (gzip 2kb) 的 JS 库。
@@ -88,7 +87,7 @@ $hub.emit(['test', 'test-1', 'test-2'], { code: 2 })
 注意，监听者会接收到每次适配到的事件源发生。例如上述例子，则会产生三条日志。
 
 
-### Store
+### Proxy Store
 
 ```js
 // 设置 store 值
@@ -109,8 +108,10 @@ setInterval(() => {
 
 ```js
 const dispatcher = $hub.DOM('button')
-                        .from('click').emit('dom-click-event')
-                        .from('mousedown').emit('dom-mousedown-event')
+                        .from('click')
+                        .emit('dom-click-event')
+                        .from('mousedown')
+                        .emit('dom-mousedown-event')
 
 $hub.on('dom-click-event', event => console.log('button click', event))
 
@@ -122,7 +123,7 @@ setTimeout(dispatcher.off, 10000)
 ### Fetch
 
 ```js
-const dispatcher = $hub.Fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4')
+const dispatcher = $hub.Fetch('https://xxxxx')
                         .emit('fetch-event1')
                         .emit('fetch-event2')
 
@@ -136,7 +137,7 @@ $hub.on('fetch-event2', result => console.log('fetch2', result))
 ### WebSocket
 
 ```js
-const dispatcher = $hub.WS('ws://legox.org:5353/a3e67a40-863c-11e7-9085-0ba4558c07dc/1000')
+const dispatcher = $hub.WS('ws://xxxxx')
                         .emit('ws-event1')
                         .emit('ws-event2')
 
@@ -152,14 +153,11 @@ setTimeout(dispatcher.off, 3000)
 <script src="./lib/socket.io.min.js"></script>
 
 <script>
-const dispatcher = $hub.IO('http://legox.org:5353')
+const dispatcher = $hub.IO('http://xxxxx')
                         .from('mock')
                         .emit('io-event')
 
-dispatcher.socket.emit('mock', {
-  key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',
-  time: 1000
-})
+dispatcher.socket.emit('mock', { key: 'xxxxx' })
 
 $hub.on('io-event', result => console.log('io:', result))
 
@@ -198,8 +196,12 @@ $hub.converter.DOMEventFormat2 = function (event) {
 
 // 可以通过自由组合 链式 衔接的顺序，进行对流的控制，从而达到你想要的效果
 const dispatcher = $hub.DOM('button')
-                        .from('click').convert('DOMEventFormat1').emit('dom-click-event')
-                        .from('mousedown').convert('DOMEventFormat1').emit('dom-mousedown-event')
+                        .from('click')
+                        .convert('DOMEventFormat1')
+                        .emit('dom-click-event')
+                        .from('mousedown')
+                        .convert('DOMEventFormat1')
+                        .emit('dom-mousedown-event')
 // 或者
 // $hub.DOM('button').from('click').convert('DOMEventFormat1' ).emit('dom-click-event1').emit('dom-click-event2' )
 // $hub.DOM('button').from('click').convert('DOMEventFormat1' ).convert('DOMEventFormat2').emit('dom-click-event1' )
@@ -215,12 +217,6 @@ $hub.on('dom-mousedown-event', event => console.log('button mousedown', event))
 
 setTimeout(dispatcher.off, 10000)
 ```
-
-## 0.1.x 差异
-
-* ~~$hub.listen~~ → $hub.on
-* ~~$hub.removeListen~~ → $hub.off
-* ~~listener.remove~~ → listener.off
 
 ## 许可
 

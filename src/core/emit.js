@@ -4,7 +4,7 @@
  * @param {Any} value
  * @return {void}
  */
-const util = require('./util')
+import util from './util'
 
 const iterineChainer = (chainer, value, callback) => {
   util.iterator(chainer, (_c, next) => {
@@ -18,8 +18,8 @@ const iterineChainer = (chainer, value, callback) => {
 }
 
 const toObserver = (observer, key, value) => {
-  if (typeof observer[ key ] !== 'undefined') {
-    observer[ key ].forEach((handler, index) => {
+  if (typeof observer[key] !== 'undefined') {
+    observer[key].forEach((handler, index) => {
       handler(value)
     })
   }
@@ -30,19 +30,19 @@ export default function (key, value) {
 
   const keyToObserver = (_key) => {
     if (key.indexOf('@store/') === 0) {
-      const keySplit = key.split('@store/')[ 1 ]
-      if (typeof data[ keySplit ] !== 'undefined') {
-        data[ keySplit ] = value
+      const keySplit = key.split('@store/')[1]
+      if (typeof data[keySplit] !== 'undefined') {
+        data[keySplit] = value
       }
     }
 
     if (key.indexOf('@chain/') === 0) {
-      const keySplit = key.split('@chain/')[ 1 ]
-      if (typeof chainer[ keySplit ] !== 'undefined') {
-        iterineChainer(chainer[ keySplit ], value, (data) => {
+      const keySplit = key.split('@chain/')[1]
+      if (typeof chainer[keySplit] !== 'undefined') {
+        iterineChainer(chainer[keySplit], value, (data) => {
           toObserver(observer, key, data)
         })
-        return void 0
+        return undefined
       }
     }
 

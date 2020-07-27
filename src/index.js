@@ -48,21 +48,19 @@ import chain from './core/chain'
  */
 import once from './core/once'
 
-let _observer = { }
+const _observer = {}
 
 // 用于存储一些持久化链接
-let _socket = {
-  ws: [ ],
-  io: [ ]
+const _socket = {
+  ws: [],
+  io: []
 }
 
-let _store = { }
+const _store = {}
+const _converter = {}
+const _chainer = {}
 
-let _converter = { }
-
-let _chainer = { }
-
-module.exports = {
+export default {
 
   /*
   * save the listening observer

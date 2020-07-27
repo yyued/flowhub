@@ -1,5 +1,2 @@
 dist
-build
-assets
-__dev__
-example
+example/lib

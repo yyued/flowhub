@@ -3,16 +3,16 @@
  * @param {String} name
  * @return {object} chainer
  */
-module.exports = function (name) {
+export default function (name) {
   const { chainer } = this
 
-  const _chainer = { }
+  const _chainer = {}
 
   _chainer.pipe = (...args) => {
-    if (chainer[ name ]) {
-      chainer[ name ] = chainer[ name ].concat(args)
+    if (chainer[name]) {
+      chainer[name] = chainer[name].concat(args)
     } else {
-      chainer[ name ] = args
+      chainer[name] = args
     }
 
     return _chainer

@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>socket.io event</title>
 
-    <script src="./lib/socket.io.min.js"></script>
-    <script src="../dist/hub.min.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>socket.io event</title>
+
+  <script src="./lib/socket.io.min.js"></script>
+  <script src="../dist/hub.min.js"></script>
 </head>
+
 <body>
 
-    <script>
-        // 多个关联
-        const dispatcher = $hub.IO('http://legox.org:5353').from('mock').emit('io-event');
+  <script>
+    // 多个关联
+    const dispatcher = $hub.IO('http://legox.org:5353')
+                            .from('mock')
+                            .emit('io-event')
 
-        // 获取 socket 流
-        dispatcher.socket.emit('mock', {
-            key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',
-            time: 1000,
-        })
+    // 获取 socket 流
+    dispatcher.socket.emit('mock', {
+      key: 'a3e67a40-863c-11e7-9085-0ba4558c07dc',
+      time: 1000,
+    })
 
-        // 注册监听
-        $hub.on('io-event', ( result ) => {
-            console.log( 'io:', result );
-        })
+    // 注册监听
+    $hub.on('io-event', result => console.log('io:', result))
 
-        setTimeout(function ( ) {
-            // 停止监听 IO 注册的流推送
-            dispatcher.off();
-        }, 3000);
-    </script>
+    setTimeout(function () {
+      // 停止监听 IO 注册的流推送
+      dispatcher.off()
+    }, 3000)
+  </script>
 
 
 </body>
+
 </html>

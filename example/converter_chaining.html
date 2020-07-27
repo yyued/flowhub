@@ -1,52 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> the converter & the chainning </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title> the converter & the chainning </title>
 </head>
+
 <body>
 
-    <button>click me !</button>
+  <button>click me !</button>
 
-    <script src="../dist/hub.min.js"></script>
+  <script src="../dist/hub.min.js"></script>
 
-    <script>
-        // 注册转换器
-        $hub.converter.DOMEventFormat1 = function ( e ) {
-            return [ e.type, e.target ];
-        }
-        $hub.converter.DOMEventFormat2 = function ( e ) {
-            return [ e.target, e.type ];
-        }
+  <script>
+    // 注册转换器
+    $hub.converter.DOMEventFormat1 = function (e) {
+      return [e.type, e.target];
+    }
+    $hub.converter.DOMEventFormat2 = function (e) {
+      return [e.target, e.type];
+    }
 
-        // 可以通过自由组合 链式 衔接的顺序，进行对流的控制，从而达到你想要的效果
-        const dispatcher = $hub.DOM('button')
-                                .from('click').convert('DOMEventFormat1').emit('dom-click-event')
-                                .from('mousedown').convert('DOMEventFormat1').emit('dom-mousedown-event');
-        // 例如 还可以
-        // $hub.DOM('button').from('click').convert('DOMEventFormat1').emit('dom-click-event1').emit('dom-click-event2')
-        // $hub.DOM('button').from('click').convert('DOMEventFormat1').convert('DOMEventFormat2').emit('dom-click-event1')
+    // 可以通过自由组合 链式 衔接的顺序，进行对流的控制，从而达到你想要的效果
+    const dispatcher = $hub.DOM('button')
+                          .from('click').convert('DOMEventFormat1').emit('dom-click-event')
+                          .from('mousedown').convert('DOMEventFormat1').emit('dom-mousedown-event');
+    // 例如 还可以
+    // $hub.DOM('button').from('click').convert('DOMEventFormat1').emit('dom-click-event1').emit('dom-click-event2')
+    // $hub.DOM('button').from('click').convert('DOMEventFormat1').convert('DOMEventFormat2').emit('dom-click-event1')
 
-        // 其他数据源例子
-        // $hub.Fetch('https://xxx').emit('e1').convert('converter').emit('e2');
-        // $hub.WS('ws://xxx').emit('e1').convert('converter').emit('e2');
-        // $hub.IO('https://xxx').from('x1').convert('converter').emit('e1').from('x2').emit('e1');
+    // 其他数据源例子
+    // $hub.Fetch('https://xxx').emit('e1').convert('converter').emit('e2');
+    // $hub.WS('ws://xxx').emit('e1').convert('converter').emit('e2');
+    // $hub.IO('https://xxx').from('x1').convert('converter').emit('e1').from('x2').emit('e1');
 
-        // 监听 DOM 事件流
-        $hub.on('dom-click-event', ( e ) => {
-            console.log( 'button click', e );
-        })
-        $hub.on('dom-mousedown-event', ( e ) => {
-            console.log( 'button mousedown', e );
-        })
+    // 监听 DOM 事件流
+    $hub.on('dom-click-event', (e) => {
+      console.log('button click', e);
+    })
+    $hub.on('dom-mousedown-event', (e) => {
+      console.log('button mousedown', e);
+    })
 
-        setTimeout(function() {
-            // 移除 DOM 监听事件，停止 发送事件流
-            dispatcher.off();
-        }, 10000);
-    </script>
+    setTimeout(function () {
+      // 移除 DOM 监听事件，停止 发送事件流
+      dispatcher.off();
+    }, 10000);
+
+  </script>
 
 </body>
+
 </html>

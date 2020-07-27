@@ -1,5 +1,5 @@
 {
-    "hooks": {
-        "commit-msg": "eslint --ext .vue,.js ./ && commitlint -e $GIT_PARAMS"
-    }
+  "hooks": {
+    "commit-msg": "eslint --ext .js ./ && commitlint -e $GIT_PARAMS"
+  }
 }

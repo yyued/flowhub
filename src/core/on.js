@@ -8,23 +8,23 @@ export default function (key, handler) {
   const { observer, data } = this
 
   const setKeyMap = _key => {
-    if (typeof observer[ _key ] === 'undefined') {
-      observer[ _key ] = [ ]
+    if (typeof observer[_key] === 'undefined') {
+      observer[_key] = []
     }
 
-    observer[ _key ].push(handler)
+    observer[_key].push(handler)
 
     // if the listener is from the data store, first time retrun the data value.
     if (_key.indexOf('@store/') === 0) {
-      const keySplit = _key.split('@store/')[ 1 ]
-      if (typeof data[ keySplit ] !== 'undefined') {
-        handler(data[ keySplit ])
+      const keySplit = _key.split('@store/')[1]
+      if (typeof data[keySplit] !== 'undefined') {
+        handler(data[keySplit])
       }
     }
   }
 
   // the listener
-  const listener = { }
+  const listener = {}
 
   listener.key = key
 

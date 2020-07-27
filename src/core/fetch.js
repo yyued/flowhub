@@ -4,88 +4,88 @@
  * @param {void | object} args
  * @return {dispatcher | void}
  */
-const util = require('./util')
+import util from './util'
 
-export default function (url, args = { }) {
-  if (url) {
-    const { emit, converter } = this
+export default function (url, args = {}) {
+  if (!url) return
 
-    let timer = void 0
+  const { emit, converter } = this
 
-    const dispatcher = { }
+  let timer
 
-    let queue = [ ]
+  const dispatcher = {}
 
-    // out of queue
-    let exec = result => {
-      if (queue.length > 0) {
-        util.iterator(queue, (_i, next) => {
-          switch (_i.type) {
-            case '__convert__': {
-              util.await(_i.func(result), (data) => {
-                result = data
-                next()
-              })
-              break
-            }
-            case '__emit__': {
-              _i.func(result)
-              break
-            }
+  const queue = []
+
+  // out of queue
+  const exec = result => {
+    if (queue.length > 0) {
+      util.iterator(queue, (_i, next) => {
+        switch (_i.type) {
+          case '__convert__': {
+            util.await(_i.func(result), (data) => {
+              result = data
+              next()
+            })
+            break
           }
-        })
-      }
-    }
-
-    dispatcher.convert = key => {
-      if (converter[ key ]) {
-        queue.push({
-          type: '__convert__',
-          func: converter[ key ]
-        })
-      }
-      return dispatcher
-    }
-
-    // send the HTTP request by fetch, and fetch data flow
-    dispatcher.emit = (key, data) => {
-      queue.push({
-        type: '__emit__',
-        func: (result) => {
-          if (data) {
-            emit.bind(this)(key, { result, data })
-          } else {
-            emit.bind(this)(key, result)
+          case '__emit__': {
+            _i.func(result)
+            break
           }
         }
       })
+    }
+  }
 
-      // 链式多次 emit 去抖
-      if (timer) {
-        clearTimeout(timer)
+  dispatcher.convert = key => {
+    if (converter[key]) {
+      queue.push({
+        type: '__convert__',
+        func: converter[key]
+      })
+    }
+    return dispatcher
+  }
+
+  // send the HTTP request by fetch, and fetch data flow
+  dispatcher.emit = (key, data) => {
+    queue.push({
+      type: '__emit__',
+      func: (result) => {
+        if (data) {
+          emit.bind(this)(key, { result, data })
+        } else {
+          emit.bind(this)(key, result)
+        }
       }
+    })
 
-      timer = setTimeout(() => {
-        dispatcher.reload()
-      }, 0)
-
-      return dispatcher
+    // 链式多次 emit 去抖
+    if (timer) {
+      clearTimeout(timer)
     }
 
-    dispatcher.reload = () => {
-      fetch(url, args)
-        .then(res => {
-          if (res.status === 200 && res.json) {
-            res.json().then(data => exec(data))
-          } else {
-            exec(res)
-          }
-        })
-        .catch(err => {
-          exec(err)
-        })
-    }
+    timer = setTimeout(() => {
+      dispatcher.reload()
+    }, 0)
 
     return dispatcher
   }
+
+  dispatcher.reload = () => {
+    window.fetch(url, args)
+      .then(res => {
+        if (res.status === 200 && res.json) {
+          res.json().then(data => exec(data))
+        } else {
+          exec(res)
+        }
+      })
+      .catch(err => {
+        exec(err)
+      })
+  }
+
+  return dispatcher
 }

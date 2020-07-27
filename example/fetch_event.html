@@ -1,32 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> fetch event </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title> fetch event </title>
 </head>
+
 <body>
 
-    <script src="../dist/hub.min.js"></script>
+  <script src="../dist/hub.min.js"></script>
 
-    <script>
-        // 绑定 fetch 事件流（ 可绑定多个 ）
-        const dispatcher = $hub.Fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event1').emit('fetch-event2');
+  <script>
+    // 绑定 fetch 事件流（可绑定多个）
+    const dispatcher = $hub.Fetch('https://legox.org/mock/8f495a90-8659-11e7-a2a8-b9241e7b71e4').emit('fetch-event1')
+                            .emit('fetch-event2')
 
-        setTimeout(() => {
-            // 刷新 fetch 事件流
-            dispatcher.reload();
-        }, 2000);
+    // 刷新 fetch 事件流
+    setTimeout(() => dispatcher.reload(), 2000)
 
-        // 监听对应的 fetch 事件流
-        $hub.on('fetch-event1', ( result ) => {
-            console.log( 'fetch1', result );
-        })
-        $hub.on('fetch-event2', ( result ) => {
-            console.log( 'fetch2', result );
-        })
-    </script>
+    // 监听对应的 fetch 事件流
+    $hub.on('fetch-event1', result => console.log('fetch1', result))
+    $hub.on('fetch-event2', result => console.log('fetch2', result))
+  </script>
 
 </body>
+
 </html>
