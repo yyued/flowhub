@@ -20,19 +20,19 @@ For frameworks of component systems, such as React, Vue.js, etc., communication 
 ## Installing
 
 ```sh
-npm i hub-js --save
+npm i flowhub --save
 ```
 
 or
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/hub-js/dist/hub.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flowhub/dist/hub.min.js"></script>
 ```
 
 ## Simple Usage
 
 ```js
-import $hub from 'hub-js';
+import $hub from 'flowhub';
 
 // register an event listener
 $hub.on('test', data => console.log('test', data))

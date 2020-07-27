@@ -18,19 +18,19 @@
 ## 安装
 
 ```sh
-npm i hub-js --save
+npm i flowhub --save
 ```
 
 或者
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/hub-js/dist/hub.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flowhub/dist/hub.min.js"></script>
 ```
 
 ## 简单使用
 
 ```js
-import $hub from 'hub-js';
+import $hub from 'flowhub';
 
 // 注册监听者
 $hub.on('test', data => console.log('test', data))
