@@ -1,14 +1,11 @@
 <h1 align="center"> hub.js </h1>
 
 <p align="center">
-  <a href="https://opensource.org/licenses/MIT">
-    <img alt="Licence" src="https://img.shields.io/badge/license-MIT-green.svg" />
-  </a>
   <a href="https://www.npmjs.org/package/hub-js">
-    <img alt="NPM" src="https://img.shields.io/badge/npm-v0.2.1-brightgreen.svg" />
+    <img alt="NPM" src="http://img.shields.io/npm/v/hub-js" />
   </a>
   <a href="">
-    <img alt="Size" src="https://img.shields.io/badge/size-7kb-blue.svg" />
+    <img alt="Size" src="https://img.shields.io/badge/size-6kb-green.svg" />
   </a>
 </p>
 
@@ -174,9 +171,7 @@ $hub.chain('test')
           d => d + 2,
           d => d + 3
         )
-        .pipe(
-          d => d + 3
-        )
+        .pipe(d => d + 3)
 
 $hub.on('@chain/test', d => console.log(d))
 
