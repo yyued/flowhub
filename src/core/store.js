@@ -26,6 +26,6 @@ export default function (_store, _observer) {
       }
     })
   } catch (error) {
-    console.error('[hub.js] Browser not support "Proxy"')
+    console.error('[flowhub] Browser not support "Proxy"')
   }
 }

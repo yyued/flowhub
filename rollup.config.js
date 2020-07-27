@@ -5,7 +5,7 @@ import banner from 'rollup-plugin-banner'
 export default {
   input: 'src/index.js',
   output: {
-    file: './dist/hub.min.js',
+    file: './dist/flowhub.min.js',
     format: 'umd',
     name: '$hub',
     sourcemap: true
@@ -18,6 +18,6 @@ export default {
       ]
     }),
     uglify(),
-    banner('hub.min.js v<%= pkg.version %>')
+    banner('flowhub.min.js v<%= pkg.version %>')
   ]
 }

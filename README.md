@@ -1,8 +1,8 @@
-<h1 align="center"> hub.js </h1>
+<h1 align="center"> Flow Hub </h1>
 
 <p align="center">
-  <a href="https://www.npmjs.org/package/hub-js">
-    <img alt="NPM" src="http://img.shields.io/npm/v/hub-js" />
+  <a href="https://www.npmjs.org/package/flowhub">
+    <img alt="NPM" src="http://img.shields.io/npm/v/flowhub" />
   </a>
   <a href="">
     <img alt="Size" src="https://img.shields.io/badge/size-6kb-green.svg" />
@@ -11,9 +11,9 @@
 
 ## Why
 
-hub.js is more simpler and lightweight (gzip 2kb). It satisfies most of the situation event-driven situation, suitable for dealing with a variety of  event streams.
+flowhub is more simpler and lightweight (gzip 2kb). It satisfies most of the situation event-driven situation, suitable for dealing with a variety of  event streams.
 
-For frameworks of component systems, such as React, Vue.js, etc., communication between non parent and child components is a bothering thing, but it can be made easy by using hub.js.
+For frameworks of component systems, such as React, Vue.js, etc., communication between non parent and child components is a bothering thing, but it can be made easy by using flowhub.
 
 [简体中文](./README.zh-CN.md)
 

@@ -1,8 +1,8 @@
-<h1 align="center"> hub.js </h1>
+<h1 align="center"> Flow Hub </h1>
 
 <p align="center">
-  <a href="https://www.npmjs.org/package/hub-js">
-    <img alt="NPM" src="http://img.shields.io/npm/v/hub-js" />
+  <a href="https://www.npmjs.org/package/flowhub">
+    <img alt="NPM" src="http://img.shields.io/npm/v/flowhub" />
   </a>
   <a href="">
     <img alt="Size" src="https://img.shields.io/badge/size-6kb-green.svg" />
@@ -13,7 +13,7 @@
 
 满足绝大部分情况事件驱动的情况，适合用于处理各种事件流，简单、轻量 (gzip 2kb) 的 JS 库。
 
-对于各种组件系统的框架，如：React、Vue.js 等等，非父子组件之间的通讯是一件麻烦的事情，但通过使用 hub.js 会变得轻松简单。
+对于各种组件系统的框架，如：React、Vue.js 等等，非父子组件之间的通讯是一件麻烦的事情，但通过使用 flowhub 会变得轻松简单。
 
 ## 安装
 

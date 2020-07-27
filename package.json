@@ -1,21 +1,21 @@
 {
-  "name": "hub-js",
-  "version": "1.0.0",
+  "name": "flowhub",
+  "version": "1.0.1",
   "description": "Through a simple way to deal with the event streams",
-  "main": "./dist/hub.min.js",
+  "main": "./dist/flowhub.min.js",
   "scripts": {
     "build": "rollup -c"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yyued/hub.js.git"
+    "url": "git+https://github.com/yyued/flowhub.git"
   },
   "author": "lijialiang",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/yyued/hub.js/issues"
+    "url": "https://github.com/yyued/flowhub/issues"
   },
-  "homepage": "https://github.com/yyued/hub.js#readme",
+  "homepage": "https://github.com/yyued/flowhub#readme",
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
