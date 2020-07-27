@@ -24,7 +24,7 @@ npm i flowhub --save
 或者
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/flowhub/dist/hub.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flowhub/dist/flowhub.min.js"></script>
 ```
 
 ## 简单使用

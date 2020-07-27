@@ -100,7 +100,7 @@ $hub.on('@store/code', data => console.log('store code', data)
 setInterval(() => {
   ++$hub.store.code
   // or
-  // hub.emit('@store/code', 1)
+  // $hub.emit('@store/code', 1)
 }, 1000)
 ```
 
