@@ -1,6 +1,6 @@
 {
   "name": "flowhub",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Through a simple way to deal with the event streams",
   "main": "./dist/flowhub.min.js",
   "scripts": {
